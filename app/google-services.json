@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "642620725032",
+    "firebase_url": "https://htc2020-4b03b.firebaseio.com",
+    "project_id": "htc2020-4b03b",
+    "storage_bucket": "htc2020-4b03b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642620725032:android:9947761b74cbaffbfae21d",
+        "android_client_info": {
+          "package_name": "com.example.htc20"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642620725032-9s7am2dv6n3duge35hich3aujb7klq17.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBleLSrQ7340yb4OcOwr7P_L676bts7adQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "642620725032-9s7am2dv6n3duge35hich3aujb7klq17.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
