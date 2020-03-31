@@ -87,7 +87,7 @@ public class SecondActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isDetected = !isDetected;
-//                btn_start_again.setEnabled(isDetected);
+                btn_start_again.setEnabled(isDetected);
             }
         });
 
