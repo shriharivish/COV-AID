@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button register;
     private TextView userLogin;
     private FirebaseAuth firebaseAuth;
+    private ProgressBar progressBarRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (validate()) {
+                    progressBarRegister.setVisibility(View.VISIBLE);
                     String user_email = userEmail.getText().toString().trim();
                     String user_pass = userPassword.getText().toString().trim();
 
