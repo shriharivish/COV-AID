@@ -117,8 +117,7 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressBarLogin.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+                    checkEmailVerification();
                 } else {
 //                    count --;
                     Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
@@ -128,5 +127,21 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void checkEmailVerification() {
+        FirebaseUser firebaseUser = fbauth.getInstance().getCurrentUser();
+        Boolean emailflag = firebaseUser.isEmailVerified();
+
+        if (emailflag) {
+            Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            finish();
+            startActivity(intent);
+        } else {
+            Toast.makeText(MainActivity.this, "Verify Your Email", Toast.LENGTH_LONG).show();
+            fbauth.signOut();
+        }
     }
 }
