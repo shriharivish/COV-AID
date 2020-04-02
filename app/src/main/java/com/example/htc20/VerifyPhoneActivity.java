@@ -30,7 +30,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private String verificationId;
     private EditText userOtp;
-    private ProgressBar OtpSubmit;
+//    private ProgressBar OtpSubmit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         userOtp = findViewById(R.id.et_Otp);
-        OtpSubmit = findViewById(R.id.pb_OtpSubmit);
+//        OtpSubmit = findViewById(R.id.pb_OtpSubmit);
 
         findViewById(R.id.btn_SubmitOtp).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +67,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     }
 
     private void sendVerificationCode(String number) {
-        OtpSubmit.setVisibility(View.VISIBLE);
+//        OtpSubmit.setVisibility(View.VISIBLE);
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 number
                 , 60
