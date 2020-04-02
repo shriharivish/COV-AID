@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (user != null) {
             finish();
-            startActivity(new Intent(MainActivity.this, SecondActivity.class));
+            startActivity(new Intent(MainActivity.this, DashboardActivity.class));
         }
 
         Register.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +102,9 @@ public class MainActivity extends AppCompatActivity {
         LoginPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, PhoneLoginActivity.class));
+                Intent intent = new Intent(MainActivity.this, PhoneLoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
     }
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 progressBarLogin.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
                     Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainActivity.this, SecondActivity.class));
+                    startActivity(new Intent(MainActivity.this, DashboardActivity.class));
                 } else {
 //                    count --;
                     Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();

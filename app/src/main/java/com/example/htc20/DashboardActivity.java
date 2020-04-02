@@ -1,5 +1,6 @@
 package com.example.htc20;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 public class DashboardActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private FloatingActionButton scanQR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,7 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab_scanQR);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,6 +47,17 @@ public class DashboardActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        scanQR = findViewById(R.id.fab_scanQR);
+        scanQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this, SecondActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override
