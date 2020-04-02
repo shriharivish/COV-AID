@@ -46,13 +46,12 @@ public class PhoneLoginActivity extends AppCompatActivity {
                 if (number.isEmpty() || number.length() != 13) {
                     PhoneNumber.setError("Enter Valid Number");
                     PhoneNumber.requestFocus();
+//                    finish();
                     return;
                 }
 
-                String phone_number = number;
-
                 Intent intent = new Intent(PhoneLoginActivity.this, VerifyPhoneActivity.class);
-                intent.putExtra("number", phone_number);
+                intent.putExtra("number", number);
                 startActivity(intent);
 
 

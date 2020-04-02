@@ -113,8 +113,8 @@ public class MainActivity extends AppCompatActivity {
         fbauth.signInWithEmailAndPassword(userName, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                progressBarLogin.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
-                    progressBarLogin.setVisibility(View.GONE);
                     Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(MainActivity.this, SecondActivity.class));
                 } else {

@@ -23,7 +23,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button register;
     private TextView userLogin;
     private FirebaseAuth firebaseAuth;
-    private ProgressBar progressBarRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +41,12 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (validate()) {
-                    progressBarRegister.setVisibility(View.VISIBLE);
                     String user_email = userEmail.getText().toString().trim();
                     String user_pass = userPassword.getText().toString().trim();
 
                     firebaseAuth.createUserWithEmailAndPassword(user_email, user_pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressBarRegister.setVisibility(View.GONE);
                             if (task.isSuccessful()) {
                                 Toast.makeText(RegistrationActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
