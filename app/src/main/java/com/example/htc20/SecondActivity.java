@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
@@ -35,7 +36,9 @@ import com.otaliastudios.cameraview.frame.Frame;
 import com.otaliastudios.cameraview.frame.FrameProcessor;
 
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SecondActivity extends AppCompatActivity {
 
@@ -46,12 +49,15 @@ public class SecondActivity extends AppCompatActivity {
     Button btn_start_again;
     FirebaseVisionBarcodeDetectorOptions options;
     FirebaseVisionBarcodeDetector detector;
+    private FirebaseFirestore db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
         Logout = (Button) findViewById(R.id.btnLogout);
         fbase = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         Dexter.withActivity(this)
                 .withPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO})
@@ -145,7 +151,8 @@ public class SecondActivity extends AppCompatActivity {
                 int value_tpe = item.getValueType();
                 switch (value_tpe) {
                     case FirebaseVisionBarcode.TYPE_TEXT: {
-                        createDialog(item.getRawValue());
+
+
                     }
                     break;
 
