@@ -2,13 +2,16 @@ package com.example.htc20;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -23,9 +26,14 @@ public class DashboardActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private FloatingActionButton scanQR;
     private Button openMapsActivity;
+    private MenuItem settings;
+    private FirebaseAuth fbase;
+    private MenuItem logout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fbase = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_dashboard);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -66,13 +74,23 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(new Intent(DashboardActivity.this, MapsActivity.class));
             }
         });
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.dashboard, menu);
+        logout = menu.findItem(R.id.logout);
+        logout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                fbase.signOut();
+                finish();
+                Toast.makeText(DashboardActivity.this, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(DashboardActivity.this, MainActivity.class));
+                return true;
+            }
+        });
         return true;
     }
 
