@@ -13,5 +13,12 @@
     <string name="menu_slideshow">Slideshow</string>
 
     <string name="home_second">Home Second</string>
+    <string name="enter_firstname">Enter First Name</string>
+    <string name="enter_lastname">Enter Last Name</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="register">Register</string>
+    <string name="already_registered_login_in">Already Registered? Login In</string>
+    <string name="password">Password</string>
+    <string name="enter_phone_number">Enter Phone Number</string>
     <string name="title_activity_maps">Map</string>
 </resources>
