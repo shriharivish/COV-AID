@@ -37,7 +37,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-
+    //function to calculate distance between two coordinates
     private float calculateDistance(double userLat, double userLng, double venueLat, double venueLng) {
 
         double latDistance = Math.toRadians(userLat - venueLat);
