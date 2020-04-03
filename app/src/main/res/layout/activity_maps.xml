@@ -9,14 +9,14 @@
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.053"
+        app:layout_constraintVertical_bias="0.0"
         tools:context=".MapsActivity"
-        tools:layout_editor_absoluteX="0dp" />
+        tools:layout_editor_absoluteX="-3dp" />
 
     <TextView
         android:id="@+id/tv_distance"
@@ -25,7 +25,17 @@
         android:text="Distance will Appear Here"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.111"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map" />
+        app:layout_constraintTop_toBottomOf="@+id/map"
+        app:layout_constraintVertical_bias="0.862" />
+
+    <Button
+        android:id="@+id/op_maps"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:text="open"
+        app:layout_constraintBottom_toBottomOf="@id/map"
+        app:layout_constraintEnd_toEndOf="@id/map" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
