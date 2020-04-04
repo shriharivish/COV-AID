@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -43,6 +44,9 @@ public class HospitalListActivity extends AppCompatActivity {
     double[] Longitudes;
     double Latitude = 0;
     double Longitude = 0;
+    int count = 1;
+
+    //    int count = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,10 +67,12 @@ public class HospitalListActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Intent i = new Intent(android.content.Intent.ACTION_VIEW,
-                //        Uri.parse("http://maps.google.com/maps?saddr="+Latitude+","+Longitude+"&daddr="+(destLatitude)+","+(destLongitude)));
-                //i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-                //startActivity(i);
+                String n = listview.getItemAtPosition(position).toString();
+                int index = n.charAt(0) - '1';
+                Intent i = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + (Latitudes[index]) + "," + (Longitudes[index])));
+                i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                startActivity(i);
 
             }
         });
@@ -105,18 +111,19 @@ public class HospitalListActivity extends AppCompatActivity {
                             Log.d("Loctag", "value: "+ placesCount);
                             for (int i = 0; i < placesCount; i++) {
                                 try {
-                                   jsonObject = (JSONObject) jsonArray.get(i);
-                                   HospitalName  = jsonObject.getString("name");
-                                   HospitalLat = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lat");
-                                   HospitalLong = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lat");
-                                   Log.d("Latitudes", "valueLat :"+HospitalLat);
-                                   Log.d("Longitudes","valueLong : "+HospitalLong);
-                                   Log.d("Names","valueName : "+HospitalName);
-                                   Latitudes[i] = Double.parseDouble(HospitalLat);
-                                   Longitudes[i] = Double.parseDouble(HospitalLong);
-                                    list.add(HospitalName + "\t\t: 0");
+                                    jsonObject = (JSONObject) jsonArray.get(i);
+                                    HospitalName  = jsonObject.getString("name");
+                                    HospitalLat = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lat");
+                                    HospitalLong = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lat");
+                                    Log.d("Latitudes", "valueLat :"+HospitalLat);
+                                    Log.d("Longitudes","valueLong : "+HospitalLong);
+                                    Log.d("Names","valueName : "+HospitalName);
+                                    Latitudes[i] = Double.parseDouble(HospitalLat);
+                                    Longitudes[i] = Double.parseDouble(HospitalLong);
+                                    list.add(count + ". " + HospitalName + "\t\t: 0");
+                                    count++;
                                     adapter.notifyDataSetChanged();
-                                   //parsing to be done
+                                    //parsing to be done
                                 } catch (JSONException e) {
                                     Log.d("Places", "Error in Adding places");
                                     e.printStackTrace();
@@ -141,6 +148,8 @@ public class HospitalListActivity extends AppCompatActivity {
         mapsAcitivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 //Intent Go_to_map = new Intent(HospitalListActivity.this, MapsActivity.class);
                 //Go_to_map.putExtra("Latitudes", Latitudes);
                 //Go_to_map.putExtra("Longitudes", Longitudes);
