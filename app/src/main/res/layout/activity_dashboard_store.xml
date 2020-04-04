@@ -48,14 +48,15 @@
                             tools:srcCompat="@drawable/user1" />
 
                         <TextView
+                            android:id="@+id/tv_store_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
                             android:text="Store Owner Dashboard"
                             android:textColor="#ffffff"
-                            android:layout_gravity="center"
-                            android:textStyle="bold"
                             android:textSize="18dp"
-                            android:layout_marginTop="10dp" />
+                            android:textStyle="bold" />
 
 
                     </LinearLayout>
