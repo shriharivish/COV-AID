@@ -1,6 +1,5 @@
 package com.example.htc20;
 
-import android.Manifest;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
@@ -9,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -22,9 +20,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -46,7 +41,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        requestLocationPermission();
 
         client = LocationServices.getFusedLocationProviderClient(this);
         client.getLastLocation().addOnSuccessListener(MapsActivity.this, new OnSuccessListener<Location>() {
@@ -70,7 +64,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         @Override
                         public void onClick(View view) {
                             // click handling code
-                            //gives nearby hospitals
+                            //shows nearby hospitals on maps
                             //Uri gmmIntentUri = Uri.parse("geo:"+Latitude+","+Longitude+"&mode=driving");
                             //Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                             //mapIntent.setPackage("com.google.android.apps.maps");
@@ -82,6 +76,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                             startActivity(i);
 
+
+
                         }
                     });
 
@@ -90,30 +86,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 
-        //distance = (TextView) findViewById(R.id.tv_distance);
-        //float distance_in_kms = calculateDistance(23.0225,72.5714,21.1702,72.8311);
-        //distance.setText(String.valueOf(distance_in_kms));
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        // Forward results to EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @AfterPermissionGranted(REQUEST_LOCATION_PERMISSION)
-    public void requestLocationPermission() {
-        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
-        if(EasyPermissions.hasPermissions(this, perms)) {
-            Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show();
-
-        }
-        else {
-            EasyPermissions.requestPermissions(this, "Please grant the location permission", REQUEST_LOCATION_PERMISSION, perms);
-        }
-    }
 
 
      /**
