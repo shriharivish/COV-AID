@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (user != null) {
             finish();
-            startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+            startActivity(new Intent(MainActivity.this, DashboardCitizenActivity.class));
+            startActivity(new Intent(MainActivity.this, DashboardCitizenActivity.class));
         }
 
         Register.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (emailflag) {
             Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+            Intent intent = new Intent(MainActivity.this, DashboardCitizenActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             finish();
             startActivity(intent);
