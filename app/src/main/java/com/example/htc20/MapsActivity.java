@@ -1,62 +1,97 @@
 package com.example.htc20;
 
-import androidx.fragment.app.FragmentActivity;
-
+import android.content.Intent;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.net.MalformedURLException;
-import java.net.URL;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private TextView distance;
-    public final static double AVERAGE_RADIUS_OF_EARTH = 6371;
+
+    private Button openMaps;
+    private FusedLocationProviderClient client;
+    private final int REQUEST_LOCATION_PERMISSION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        Log.d("Test_LOG : ", "onCreate()");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        distance = (TextView) findViewById(R.id.tv_distance);
-        float distance_in_kms = calculateDistance(23.0225,72.5714,21.1702,72.8311);
-        distance.setText(String.valueOf(distance_in_kms));
+
+        client = LocationServices.getFusedLocationProviderClient(this);
+        client.getLastLocation().addOnSuccessListener(MapsActivity.this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null){
+                    final double Latitude = location.getLatitude();
+                    final double Longitude = location.getLongitude();
+                    LatLng myLatLng = new LatLng(Latitude, Longitude);
+                    LatLng destLatLng = new LatLng(Latitude -0.01,Longitude-0.01);
+                    mMap.addMarker(new MarkerOptions().position(myLatLng).title("My Location"));
+                    mMap.addMarker(new MarkerOptions().position(destLatLng).title("My Destination"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(destLatLng));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+
+                    //open maps by clicking on the button
+                    openMaps = (Button) findViewById(R.id.op_maps);
+                    openMaps.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View view) {
+                            // click handling code
+                            //shows nearby hospitals on maps
+                            //Uri gmmIntentUri = Uri.parse("geo:"+Latitude+","+Longitude+"&mode=driving");
+                            //Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            //mapIntent.setPackage("com.google.android.apps.maps");
+                            //if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                            //    startActivity(mapIntent);
+                            //}
+                            Intent i = new Intent(android.content.Intent.ACTION_VIEW,
+                                    Uri.parse("http://maps.google.com/maps?saddr="+Latitude+","+Longitude+"&daddr="+(Latitude-0.01)+","+(Longitude-0.01)));
+                            i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                            startActivity(i);
+
+
+
+                        }
+                    });
+
+                }
+            }
+        });
+
 
     }
 
-    //function to calculate distance between two coordinates
-    private float calculateDistance(double userLat, double userLng, double venueLat, double venueLng) {
-
-        double latDistance = Math.toRadians(userLat - venueLat);
-        double lngDistance = Math.toRadians(userLng - venueLng);
-
-        double a = (Math.sin(latDistance / 2) * Math.sin(latDistance / 2)) +
-                (Math.cos(Math.toRadians(userLat))) *
-                        (Math.cos(Math.toRadians(venueLat))) *
-                        (Math.sin(lngDistance / 2)) *
-                        (Math.sin(lngDistance / 2));
-
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return (float) (Math.round(AVERAGE_RADIUS_OF_EARTH * c));
-
-    }
 
 
-    /**
+
+     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
@@ -69,9 +104,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //get my location
+
+
+        // Add a marker at both locations and move the camera
+        //mMap.addMarker(new MarkerOptions().position(myLatLng).title("My Location"));
+        //mMap.addMarker(new MarkerOptions().position(destLoc).title("Destination"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(myLoc));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(destLoc));
     }
+
+
 }
