@@ -63,7 +63,11 @@ public class HospitalListActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(HospitalListActivity.this, LauncherActivity.class));
+                //Intent i = new Intent(android.content.Intent.ACTION_VIEW,
+                //        Uri.parse("http://maps.google.com/maps?saddr="+Latitude+","+Longitude+"&daddr="+(destLatitude)+","+(destLongitude)));
+                //i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                //startActivity(i);
+
             }
         });
 
