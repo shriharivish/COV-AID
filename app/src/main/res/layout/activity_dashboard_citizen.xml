@@ -183,7 +183,7 @@
                                 </RelativeLayout>
 
                                 <ImageView
-                                    android:id="@+id/imageView3"
+                                    android:id="@+id/img_qrCodeExit"
                                     android:layout_width="73dp"
                                     android:layout_height="65dp"
                                     android:layout_gravity="center"
