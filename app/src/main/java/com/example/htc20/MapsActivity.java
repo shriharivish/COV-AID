@@ -42,6 +42,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //retrieve the Locations of all the nearby hospitals
+        Bundle extras = getIntent().getExtras();
+        double[] arrayLat = extras.getDoubleArray("Latitudes");
+        double[] arrayLong = extras.getDoubleArray("Longitudes");
+        Log.d("arrLat", "values :"+arrayLat.length);
+        Log.d("arrLong", "values :"+arrayLong.length);
+
+        //create onclick functions for each hospital
 
         client = LocationServices.getFusedLocationProviderClient(this);
         client.getLastLocation().addOnSuccessListener(MapsActivity.this, new OnSuccessListener<Location>() {
