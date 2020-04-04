@@ -37,8 +37,6 @@ public class HospitalListActivity extends AppCompatActivity {
     private int PROXIMITY_RADIUS = 1500;
     private ListView hospital_list;
     private Button mapsAcitivity;
-    double[] Latitudes;
-    double[] Longitudes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +83,6 @@ public class HospitalListActivity extends AppCompatActivity {
                             Log.d("Places","Values : "+jsonObject);
                             jsonArray = jsonObject.getJSONArray("results");
                             int placesCount = jsonArray.length();
-                            Latitudes = new double[placesCount];
-                            Longitudes = new double[placesCount];
                             Log.d("Loctag", "value: "+ placesCount);
                             for (int i = 0; i < placesCount; i++) {
                                 try {
@@ -97,9 +93,7 @@ public class HospitalListActivity extends AppCompatActivity {
                                    Log.d("Latitudes", "valueLat :"+HospitalLat);
                                    Log.d("Longitudes","valueLong : "+HospitalLong);
                                    Log.d("Names","valueName : "+HospitalName);
-                                   Latitudes[i] = Double.parseDouble(HospitalLat);
-                                   Longitudes[i] = Double.parseDouble(HospitalLong);
-                                    list.add(HospitalName);
+                                    list.add(HospitalName + "\t\t: 0");
                                     adapter.notifyDataSetChanged();
                                    //parsing to be done
                                 } catch (JSONException e) {
@@ -126,10 +120,7 @@ public class HospitalListActivity extends AppCompatActivity {
         mapsAcitivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Go_to_map = new Intent(HospitalListActivity.this, MapsActivity.class);
-                Go_to_map.putExtra("Latitudes", Latitudes);
-                Go_to_map.putExtra("Longitudes", Longitudes);
-                startActivity(Go_to_map);
+                startActivity(new Intent(HospitalListActivity.this, MapsActivity.class));
             }
         });
 
