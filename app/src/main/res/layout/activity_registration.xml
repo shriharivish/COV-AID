@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backgrob43"
+    android:background="@drawable/back1"
     tools:context=".RegistrationActivity">
 
     <EditText
@@ -12,6 +12,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
+        android:autofillHints=""
         android:fontFamily="serif-monospace"
         android:hint="@string/enter_firstname"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,8 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.285"
-        tools:visibility="visible"
-        android:autofillHints="" />
+        tools:visibility="visible" />
 
     <EditText
         android:id="@+id/etUserEmail"
@@ -113,15 +113,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:passwordToggleEnabled="true"
-        app:layout_constraintTop_toBottomOf="@+id/etFirstName">
+        app:layout_constraintTop_toBottomOf="@+id/etFirstName"
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etUserPassword"
-            android:ems="10"
-            android:fontFamily="serif-monospace"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="serif-monospace"
             android:hint="@string/set_password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
