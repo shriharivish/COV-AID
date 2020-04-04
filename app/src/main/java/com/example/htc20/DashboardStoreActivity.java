@@ -2,6 +2,7 @@ package com.example.htc20;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +17,9 @@ import com.google.firebase.auth.FirebaseUser;
 public class DashboardStoreActivity extends AppCompatActivity {
 
     ImageView imageView_entry, imageView_exit;
+
     Button button;
+    private Button logout;
     EditText qrCodeText;
     private FirebaseAuth fbAuth;
     private TextView storeName;
@@ -29,7 +32,7 @@ public class DashboardStoreActivity extends AppCompatActivity {
         fbAuth = FirebaseAuth.getInstance();
         imageView_entry = findViewById(R.id.img_qrCodeEntry);
         imageView_exit = findViewById(R.id.img_qrCodeExit);
-
+        logout = (Button) findViewById(R.id.etLogout);
         FirebaseUser user = fbAuth.getCurrentUser();
         String email = user.getEmail().toString();
 
@@ -46,6 +49,15 @@ public class DashboardStoreActivity extends AppCompatActivity {
         new ImageDownloaderTask(imageView_entry).execute("https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=" + text_entry);
         new ImageDownloaderTask(imageView_exit).execute("https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=" + text_exit);
 
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fbAuth.signOut();
+                finish();
+                Toast.makeText(DashboardStoreActivity.this, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(DashboardStoreActivity.this, LauncherActivity.class));
+            }
+        });
 
     }
 }

@@ -62,12 +62,26 @@ public class StoreLoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBarLogin.setVisibility(View.VISIBLE);
                 String email = uniqueID.getText().toString().trim() + "@htc2020.com";
-                Validate(email, password.getText().toString().trim());
+                if(smallValidate(uniqueID.getText().toString().trim(), password.getText().toString().trim())) {
+                    Validate(email, password.getText().toString().trim());
+                    progressBarLogin.setVisibility(View.VISIBLE);
+                }
 
             }
         });
+    }
+
+    private boolean smallValidate(String userName, String password){
+        boolean result = false;
+        if(userName.isEmpty() || password.isEmpty()){
+            Toast.makeText(this, "Please Enter All Details", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            result = true;
+
+        }
+        return result;
     }
 
     private void Validate(String userName, String userPass) {

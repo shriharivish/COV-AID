@@ -74,9 +74,10 @@ public class MainActivity extends AppCompatActivity {
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBarLogin.setVisibility(View.VISIBLE);
-                Validate(Email.getText().toString(), Password.getText().toString());
-
+                if(smallValidate(Email.getText().toString(), Password.getText().toString())) {
+                    Validate(Email.getText().toString(), Password.getText().toString());
+                    progressBarLogin.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -90,39 +91,51 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void Validate(String userName, String userPass) {
-
-        progressDialog.setMessage("Logging you in...");
-        fbauth.signInWithEmailAndPassword(userName, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                progressBarLogin.setVisibility(View.GONE);
-                if (task.isSuccessful()) {
-                    checkEmailVerification();
-                } else {
-//                    count --;
-                    Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
-//                    if(count == 0) {
-//                        Login.setEnabled(false);
-//                    }
-                }
+        private boolean smallValidate(String userName, String password){
+            boolean result = false;
+            if(userName.isEmpty() || password.isEmpty()){
+                Toast.makeText(this, "Please Enter All Details", Toast.LENGTH_SHORT).show();
             }
-        });
-    }
+            else{
+                result = true;
 
-    private void checkEmailVerification() {
-        FirebaseUser firebaseUser = fbauth.getInstance().getCurrentUser();
-        Boolean emailflag = firebaseUser.isEmailVerified();
-
-        if (emailflag) {
-            Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MainActivity.this, DashboardCitizenActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            finish();
-            startActivity(intent);
-        } else {
-            Toast.makeText(MainActivity.this, "Verify Your Email", Toast.LENGTH_LONG).show();
-            fbauth.signOut();
+            }
+            return result;
         }
-    }
+
+        private void Validate(String userName, String userPass) {
+
+            progressDialog.setMessage("Logging you in...");
+            fbauth.signInWithEmailAndPassword(userName, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    progressBarLogin.setVisibility(View.GONE);
+                    if (task.isSuccessful()) {
+                        checkEmailVerification();
+                    } else {
+    //                    count --;
+                        Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+    //                    if(count == 0) {
+    //                        Login.setEnabled(false);
+    //                    }
+                    }
+                }
+            });
+        }
+
+        private void checkEmailVerification() {
+            FirebaseUser firebaseUser = fbauth.getInstance().getCurrentUser();
+            Boolean emailflag = firebaseUser.isEmailVerified();
+
+            if (emailflag) {
+                Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, DashboardCitizenActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                finish();
+                startActivity(intent);
+            } else {
+                Toast.makeText(MainActivity.this, "Verify Your Email", Toast.LENGTH_LONG).show();
+                fbauth.signOut();
+            }
+        }
 }

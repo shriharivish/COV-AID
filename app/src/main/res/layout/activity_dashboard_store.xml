@@ -58,6 +58,12 @@
                             android:textSize="18dp"
                             android:textStyle="bold" />
 
+                        <Button
+                            android:id="@+id/etLogout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/logout" />
+
 
                     </LinearLayout>
 
