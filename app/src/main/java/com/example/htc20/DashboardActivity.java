@@ -29,7 +29,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private FloatingActionButton scanQR;
-    private Button openMapsActivity;
+    private Button openMapsActivity, viewHospitals;
     private MenuItem settings;
     private FirebaseAuth fbase;
     private MenuItem logout;
@@ -52,6 +52,16 @@ public class DashboardActivity extends AppCompatActivity {
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        viewHospitals = findViewById(R.id.btn_viewHospitals);
+        viewHospitals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this, HospitalListActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -79,6 +89,8 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(new Intent(DashboardActivity.this, MapsActivity.class));
             }
         });
+
+
     }
 
 

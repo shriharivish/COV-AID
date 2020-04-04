@@ -54,13 +54,13 @@ public class StoreRegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_registration);
 
-        userPassword = (TextInputEditText) findViewById(R.id.etSetPassword);
-        userEmail = (EditText) findViewById(R.id.etEmail);
-        userLogin = (TextView) findViewById(R.id.etNotLogin);
-        register = (Button) findViewById(R.id.etRegister);
-        uniqueID = (EditText) findViewById(R.id.etUniqueID);
-        shopName = (EditText) findViewById(R.id.etShopName);
-        service_category = (Spinner) findViewById(R.id.etCategories);
+        userPassword = findViewById(R.id.etSetPassword);
+        userEmail = findViewById(R.id.etEmail);
+        userLogin = findViewById(R.id.etNotLogin);
+        register = findViewById(R.id.etRegister);
+        uniqueID = findViewById(R.id.etUniqueID);
+        shopName = findViewById(R.id.etShopName);
+        service_category = findViewById(R.id.etCategories);
         // map = (MapActivity)......................
 
         firebaseAuth = FirebaseAuth.getInstance();

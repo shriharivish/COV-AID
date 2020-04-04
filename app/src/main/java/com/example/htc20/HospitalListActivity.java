@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class HospitalListActivity extends AppCompatActivity {
@@ -27,14 +29,25 @@ public class HospitalListActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient client;
     private int PROXIMITY_RADIUS = 1500;
-
+    private ListView hospital_list;
     String hospitals[] = {"Hospital1", "Hospital2", "Hospital3", "Hospital4", "Hospital5"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hospital_list);
-        ListView hospital_list = findViewById(R.id.lv_hospitalList);
+        hospital_list = findViewById(R.id.lv_hospitalList);
+
+        final ListView listview = (ListView) findViewById(R.id.lv_hospitalList);
+
+
+        final ArrayList<String> list = new ArrayList<String>();
+        for (int i = 0; i < hospitals.length; ++i) {
+            list.add(hospitals[i]);
+        }
+        final ArrayAdapter adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1, list);
+        listview.setAdapter(adapter);
 
         client = LocationServices.getFusedLocationProviderClient(this);
         client.getLastLocation().addOnSuccessListener(HospitalListActivity.this, new OnSuccessListener<Location>() {
@@ -67,10 +80,7 @@ public class HospitalListActivity extends AppCompatActivity {
 
 
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,
-                R.layout.activity_hospital_list, hospitals);
 
-        hospital_list.setAdapter(adapter);
     }
 
     private String getUrl(double latitude, double longitude, String nearbyPlace) {
