@@ -44,7 +44,7 @@ public class DashboardCitizenActivity extends AppCompatActivity {
 
         requestLocationPermission();
     }
-
+    //permission
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
