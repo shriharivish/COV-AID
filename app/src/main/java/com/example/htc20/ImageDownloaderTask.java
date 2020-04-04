@@ -1,4 +1,4 @@
-package com.example.htc20.ui.home;
+package com.example.htc20;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
