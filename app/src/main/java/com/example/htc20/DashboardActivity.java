@@ -133,7 +133,7 @@ public class DashboardActivity extends AppCompatActivity {
                 fbase.signOut();
                 finish();
                 Toast.makeText(DashboardActivity.this, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(DashboardActivity.this, MainActivity.class));
+                startActivity(new Intent(DashboardActivity.this, LauncherActivity.class));
                 return true;
             }
         });
