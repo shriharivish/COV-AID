@@ -102,7 +102,7 @@ public class HospitalListActivity extends AppCompatActivity {
                                    Log.d("Names","valueName : "+HospitalName);
                                    Latitudes[i] = Double.parseDouble(HospitalLat);
                                    Longitudes[i] = Double.parseDouble(HospitalLong);
-                                    list.add(HospitalName);
+                                    list.add(HospitalName + "\t\t: 0");
                                     adapter.notifyDataSetChanged();
                                    //parsing to be done
                                 } catch (JSONException e) {
