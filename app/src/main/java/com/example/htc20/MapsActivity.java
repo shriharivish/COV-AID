@@ -56,13 +56,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     final double Latitude = location.getLatitude();
                     final double Longitude = location.getLongitude();
                     LatLng myLatLng = new LatLng(Latitude, Longitude);
-                    LatLng destLatLng = new LatLng(Latitude -2,Longitude-2);
+                    LatLng destLatLng = new LatLng(Latitude -0.01,Longitude-0.01);
                     mMap.addMarker(new MarkerOptions().position(myLatLng).title("My Location"));
                     mMap.addMarker(new MarkerOptions().position(destLatLng).title("My Destination"));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo(5));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(destLatLng));
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo(5));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
 
                     //open maps by clicking on the button
                     openMaps = (Button) findViewById(R.id.op_maps);
@@ -71,12 +71,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         public void onClick(View view) {
                             // click handling code
                             //gives nearby hospitals
-                            Uri gmmIntentUri = Uri.parse("geo:"+Latitude+","+Longitude+"?q=hospitals");
-                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                            mapIntent.setPackage("com.google.android.apps.maps");
-                            if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                                startActivity(mapIntent);
-                            }
+                            //Uri gmmIntentUri = Uri.parse("geo:"+Latitude+","+Longitude+"&mode=driving");
+                            //Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            //mapIntent.setPackage("com.google.android.apps.maps");
+                            //if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                            //    startActivity(mapIntent);
+                            //}
+                            Intent i = new Intent(android.content.Intent.ACTION_VIEW,
+                                    Uri.parse("http://maps.google.com/maps?saddr="+Latitude+","+Longitude+"&daddr="+(Latitude-0.01)+","+(Longitude-0.01)));
+                            i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                            startActivity(i);
+
                         }
                     });
 
