@@ -110,11 +110,12 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                     user.put("service_category", category);
 
                     db.collection("store")
-                            .add(user)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            .document(strUniqueID)
+                            .set(user)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot added");
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
