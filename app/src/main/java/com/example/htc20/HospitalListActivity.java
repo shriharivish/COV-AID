@@ -1,10 +1,13 @@
 package com.example.htc20;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +37,7 @@ public class HospitalListActivity extends AppCompatActivity {
     private int PROXIMITY_RADIUS = 1500;
     private ListView hospital_list;
     String hospitals[] = {"Hospital1", "Hospital2", "Hospital3", "Hospital4", "Hospital5"};
-
+    private Button mapsAcitivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,14 +46,18 @@ public class HospitalListActivity extends AppCompatActivity {
 
         final ListView listview = (ListView) findViewById(R.id.lv_hospitalList);
 
-
+        mapsAcitivity = findViewById(R.id.btn_mapsActivityLauncher);
+        mapsAcitivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HospitalListActivity.this, MapsActivity.class));
+            }
+        });
         final ArrayList<String> list = new ArrayList<String>();
         for (int i = 0; i < hospitals.length; ++i) {
             list.add(hospitals[i]);
         }
-        final ArrayAdapter adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, list);
-        listview.setAdapter(adapter);
+
 
         client = LocationServices.getFusedLocationProviderClient(this);
         client.getLastLocation().addOnSuccessListener(HospitalListActivity.this, new OnSuccessListener<Location>() {
@@ -91,7 +98,7 @@ public class HospitalListActivity extends AppCompatActivity {
                                    Log.d("Latitudes", "valueLat :"+HospitalLat);
                                    Log.d("Longitudes","valueLong : "+HospitalLong);
                                    Log.d("Names","valueName : "+HospitalName);
-
+                                    list.add(HospitalName);
                                    //parsing to be done
                                 } catch (JSONException e) {
                                     Log.d("Places", "Error in Adding places");
@@ -110,8 +117,13 @@ public class HospitalListActivity extends AppCompatActivity {
                     }
 
                 }
+
             }
         });
+
+        final ArrayAdapter adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1, list);
+        listview.setAdapter(adapter);
 
 
 
