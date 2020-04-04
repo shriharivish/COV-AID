@@ -33,7 +33,7 @@ import java.util.concurrent.ExecutionException;
 
 public class HospitalListActivity extends AppCompatActivity {
 
-
+    //variables
     private FusedLocationProviderClient client;
     private int PROXIMITY_RADIUS = 1500;
     private ListView hospital_list;
