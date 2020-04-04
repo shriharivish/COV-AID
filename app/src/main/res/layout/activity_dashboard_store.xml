@@ -48,14 +48,15 @@
                             tools:srcCompat="@drawable/user1" />
 
                         <TextView
+                            android:id="@+id/tv_store_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
                             android:text="Store Owner Dashboard"
                             android:textColor="#ffffff"
-                            android:layout_gravity="center"
-                            android:textStyle="bold"
                             android:textSize="18dp"
-                            android:layout_marginTop="10dp" />
+                            android:textStyle="bold" />
 
 
                     </LinearLayout>
@@ -87,12 +88,23 @@
                                     android:layout_height="match_parent">
 
 
+                                    <TextView
+                                        android:id="@+id/textView3"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:text="Entry QR Code"
+                                        android:layout_marginBottom="15dp"
+
+                                        android:layout_marginEnd="130dp"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentBottom="true"/>
                                 </RelativeLayout>
 
                                 <ImageView
                                     android:id="@+id/img_qrCodeEntry"
-                                    android:layout_width="300dp"
-                                    android:layout_height="300dp"
+                                    android:layout_width="200dp"
+                                    android:layout_height="200dp"
                                     android:layout_gravity="center" />
 
 
@@ -117,22 +129,24 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent">
 
+
                                     <TextView
+                                        android:id="@+id/textView4"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_alignParentBottom="true"
-                                        android:layout_marginTop="10dp"
-                                        android:layout_marginEnd="53dp"
+                                        android:gravity="center"
+                                        android:text="Exit QR Code"
                                         android:layout_marginBottom="15dp"
-                                        android:text="BANKS/ATMS"
-                                        android:textSize="16sp" />
+
+                                        android:layout_marginEnd="130dp"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentBottom="true"/>
                                 </RelativeLayout>
 
                                 <ImageView
                                     android:id="@+id/img_qrCodeExit"
-                                    android:layout_width="300dp"
-                                    android:layout_height="300dp"
+                                    android:layout_width="200dp"
+                                    android:layout_height="200dp"
                                     android:layout_gravity="center" />
 
 

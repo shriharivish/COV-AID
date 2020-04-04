@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +19,7 @@ public class DashboardStoreActivity extends AppCompatActivity {
     Button button;
     EditText qrCodeText;
     private FirebaseAuth fbAuth;
+    private TextView storeName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +33,12 @@ public class DashboardStoreActivity extends AppCompatActivity {
         FirebaseUser user = fbAuth.getCurrentUser();
         String email = user.getEmail().toString();
 
+
         int index = email.indexOf('@');
         String unique_id = email.substring(0, index);
+
+        storeName = findViewById(R.id.tv_store_name);
+        storeName.setText(unique_id + "'s Dashboard");
 
         String text_entry = unique_id + "entry";
         String text_exit = unique_id + "exit";
