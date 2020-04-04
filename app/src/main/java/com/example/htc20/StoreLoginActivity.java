@@ -47,10 +47,10 @@ public class StoreLoginActivity extends AppCompatActivity {
 
         FirebaseUser user = fbauth.getCurrentUser();
 
-        if (user != null) {
-            finish();
-            startActivity(new Intent(StoreLoginActivity.this, DashboardStoreActivity.class));
-        }
+//        if (user != null) {
+//            finish();
+//            startActivity(new Intent(StoreLoginActivity.this, DashboardStoreActivity.class));
+//        }
 
         notRegister.setOnClickListener(new View.OnClickListener() {
             @Override
