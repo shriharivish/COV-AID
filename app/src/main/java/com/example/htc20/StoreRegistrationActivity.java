@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +46,7 @@ public class StoreRegistrationActivity extends AppCompatActivity {
     private Spinner service_category;
     private FusedLocationProviderClient client;
     private final int REQUEST_LOCATION_PERMISSION = 1;
+
 
     private static final String TAG = "DocSnippets";
 
@@ -71,22 +72,10 @@ public class StoreRegistrationActivity extends AppCompatActivity {
         service_category = findViewById(R.id.etCategories);
         // map = (MapActivity)......................
 
+        //final GeoPoint gp = new GeoPoint((int)(Latitude * 1E6), (int)(Longitude * 1E6));
+
         //get location
-        requestLocationPermission();
         client = LocationServices.getFusedLocationProviderClient(this);
-        client.getLastLocation().addOnSuccessListener(StoreRegistrationActivity.this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null){
-                    final double Latitude = location.getLatitude();
-                    final double Longitude = location.getLongitude();
-                    LatLng storeLatLng = new LatLng(Latitude, Longitude);
-
-
-                        }
-
-            }
-        });
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -103,11 +92,29 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                     String shop_name = shopName.getText().toString().trim();
                     String category = String.valueOf(service_category.getSelectedItem());
 
-                    Map<String, Object> user = new HashMap<>();
+                    final Map<String, Object> user = new HashMap<>();
                     user.put("unique_id", strUniqueID);
                     user.put("email", email);
                     user.put("shop_name", shop_name);
                     user.put("service_category", category);
+
+
+                    requestLocationPermission();
+
+                    client.getLastLocation().addOnSuccessListener(StoreRegistrationActivity.this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null){
+                                double Latitude =  location.getLatitude();
+                                double Longitude = location.getLongitude();
+                                Log.d("Latitude", "value: "+Latitude);
+                                GeoPoint gp = new GeoPoint(Latitude , Longitude);
+                                Log.d("gp", "val: "+gp);
+                                user.put("shop_loc", gp);
+                            }
+
+                        }
+                    });
 
                     db.collection("store")
                             .add(user)
