@@ -2,6 +2,7 @@ package com.example.htc20;
 
 import android.content.Intent;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +40,8 @@ public class HospitalListActivity extends AppCompatActivity {
     private Button mapsAcitivity;
     double[] Latitudes;
     double[] Longitudes;
+    double Latitude = 0;
+    double Longitude = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,8 +64,8 @@ public class HospitalListActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Location location) {
                 if (location != null){
-                    final double Latitude = location.getLatitude();
-                    final double Longitude = location.getLongitude();
+                    Latitude = location.getLatitude();
+                    Longitude = location.getLongitude();
                     LatLng myLatLng = new LatLng(Latitude, Longitude);
                     //the code to retrieve nearby places will be written below
                     String data = "";
@@ -126,10 +129,16 @@ public class HospitalListActivity extends AppCompatActivity {
         mapsAcitivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Go_to_map = new Intent(HospitalListActivity.this, MapsActivity.class);
-                Go_to_map.putExtra("Latitudes", Latitudes);
-                Go_to_map.putExtra("Longitudes", Longitudes);
-                startActivity(Go_to_map);
+                //Intent Go_to_map = new Intent(HospitalListActivity.this, MapsActivity.class);
+                //Go_to_map.putExtra("Latitudes", Latitudes);
+                //Go_to_map.putExtra("Longitudes", Longitudes);
+                //startActivity(Go_to_map);
+                Uri gmmIntentUri = Uri.parse("geo:"+Latitude+","+Longitude+"?q=hospitals");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(mapIntent);
+                }
             }
         });
 
