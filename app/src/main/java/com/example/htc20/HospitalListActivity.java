@@ -146,7 +146,7 @@ public class HospitalListActivity extends AppCompatActivity {
                                         }
                                     });
                                     Integer lcc = user.get("lcc");
-                                    list.add(count + ". " + HospitalName + "\t\t: " + String.valueOf(lcc);
+                                    list.add(count + ". " + HospitalName + "\t\t: " + String.valueOf(lcc));
                                     count++;
                                     adapter.notifyDataSetChanged();
                                     //parsing to be done
