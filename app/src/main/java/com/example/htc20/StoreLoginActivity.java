@@ -49,7 +49,7 @@ public class StoreLoginActivity extends AppCompatActivity {
 
         if (user != null) {
             finish();
-            startActivity(new Intent(StoreLoginActivity.this, StoreDashboardActivity.class));
+            startActivity(new Intent(StoreLoginActivity.this, DashboardStoreActivity.class));
         }
 
         notRegister.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +96,7 @@ public class StoreLoginActivity extends AppCompatActivity {
 
         if (emailflag) {
             Toast.makeText(StoreLoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(StoreLoginActivity.this, StoreDashboardActivity.class);
+            Intent intent = new Intent(StoreLoginActivity.this, DashboardStoreActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             finish();
             startActivity(intent);
