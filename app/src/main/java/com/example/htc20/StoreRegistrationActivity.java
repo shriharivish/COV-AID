@@ -26,7 +26,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.firestore.GeoPoint;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +44,8 @@ public class StoreRegistrationActivity extends AppCompatActivity {
     private Spinner service_category;
     private FusedLocationProviderClient client;
     private final int REQUEST_LOCATION_PERMISSION = 1;
+    double Latitude = 0;
+    double Longitude = 0;
 
 
     private static final String TAG = "DocSnippets";
@@ -104,17 +105,18 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Location location) {
                             if (location != null){
-                                double Latitude =  location.getLatitude();
-                                double Longitude = location.getLongitude();
+                                Latitude =  location.getLatitude();
+                                Longitude = location.getLongitude();
                                 Log.d("Latitude", "value: "+Latitude);
-                                GeoPoint gp = new GeoPoint(Latitude , Longitude);
-                                Log.d("gp", "val: "+gp);
-                                user.put("shop_loc", gp);
+                                //GeoPoint gp = new GeoPoint(Latitude , Longitude);
+                                //Log.d("gp", "val: "+gp);
+                                //user.put("shop_loc", gp);
                             }
 
                         }
                     });
-
+                        user.put("latitude",Latitude);
+                        user.put("longitude",Longitude);
                     db.collection("store")
                             .document(strUniqueID)
                             .set(user)
