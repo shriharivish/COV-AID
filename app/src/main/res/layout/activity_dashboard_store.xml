@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DashboardStoreActivity">
-
     <ImageView
         android:id="@+id/img_qrCodeImage"
         android:layout_width="300dp"

@@ -74,7 +74,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             Intent i = new Intent(android.content.Intent.ACTION_VIEW,
                                     Uri.parse("http://maps.google.com/maps?saddr="+Latitude+","+Longitude+"&daddr="+(Latitude-0.01)+","+(Longitude-0.01)));
                             i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-                            startActivity(i);
+                            if (i.resolveActivity(getPackageManager()) != null) {
+                                startActivity(i);
+                            }
 
 
 

@@ -10,8 +10,8 @@
 
     <EditText
         android:id="@+id/etPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="170dp"
+        android:layout_height="33dp"
         android:background="#98FFFFFF"
         android:ems="10"
         android:fontFamily="serif-monospace"
@@ -40,8 +40,8 @@
     <EditText
         android:id="@+id/etEmail"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="176dp"
+        android:layout_height="31dp"
         android:background="#98FFFFFF"
         android:duplicateParentState="false"
         android:editable="false"
