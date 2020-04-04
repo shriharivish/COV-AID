@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +13,10 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -67,6 +70,38 @@ public class HospitalListActivity extends AppCompatActivity {
                     try {
                         jsonOutput = new RequestJsonPlaces().execute(strUrl).get();
                         Log.d("mytag", "values : "+ jsonOutput);
+                        JSONArray jsonArray = null;
+                        JSONObject jsonObject;
+                        String HospitalLat = "";
+                        String HospitalLong = "";
+                        String HospitalName  = "";
+                        try {
+                            Log.d("Places", "parse");
+                            jsonObject = new JSONObject((String) jsonOutput);
+                            Log.d("Places","Values : "+jsonObject);
+                            jsonArray = jsonObject.getJSONArray("results");
+                            int placesCount = jsonArray.length();
+                            Log.d("Loctag", "value: "+ placesCount);
+                            for (int i = 0; i < placesCount; i++) {
+                                try {
+                                   jsonObject = (JSONObject) jsonArray.get(i);
+                                   HospitalName  = jsonObject.getString("name");
+                                   HospitalLat = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lat");
+                                   HospitalLong = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lat");
+                                   Log.d("Latitudes", "valueLat :"+HospitalLat);
+                                   Log.d("Longitudes","valueLong : "+HospitalLong);
+                                   Log.d("Names","valueName : "+HospitalName);
+
+                                   //parsing to be done
+                                } catch (JSONException e) {
+                                    Log.d("Places", "Error in Adding places");
+                                    e.printStackTrace();
+                                }
+                            }
+                        } catch (JSONException e) {
+                            Log.d("Places", "parse error");
+                            e.printStackTrace();
+                        }
 
                     } catch (ExecutionException e) {
                         e.printStackTrace();
