@@ -125,7 +125,7 @@ public class HospitalListActivity extends AppCompatActivity {
                                     jsonObject = (JSONObject) jsonArray.get(i);
                                     HospitalName  = jsonObject.getString("name");
                                     HospitalLat = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lat");
-                                    HospitalLong = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lat");
+                                    HospitalLong = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lng");
                                     Log.d("Latitudes", "valueLat :"+HospitalLat);
                                     Log.d("Longitudes","valueLong : "+HospitalLong);
                                     Latitudes[i] = Double.parseDouble(HospitalLat);
