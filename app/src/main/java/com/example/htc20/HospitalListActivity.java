@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -114,7 +113,7 @@ public class HospitalListActivity extends AppCompatActivity {
                                     jsonObject = (JSONObject) jsonArray.get(i);
                                     HospitalName  = jsonObject.getString("name");
                                     HospitalLat = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lat");
-                                    HospitalLong = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lat");
+                                    HospitalLong = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("long");
                                     Log.d("Latitudes", "valueLat :"+HospitalLat);
                                     Log.d("Longitudes","valueLong : "+HospitalLong);
                                     Log.d("Names","valueName : "+HospitalName);
