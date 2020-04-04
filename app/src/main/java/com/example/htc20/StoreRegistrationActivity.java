@@ -97,7 +97,7 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                                 }
                             });
 
-                    String temp_email = uniqueID + "@htc2020.com";
+                    String temp_email = strUniqueID + "@htc2020.com";
                     firebaseAuth.createUserWithEmailAndPassword(temp_email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -107,11 +107,17 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                                 startActivity(new Intent(StoreRegistrationActivity.this, StoreLoginActivity.class));
 
                             } else {
-                                Toast.makeText(StoreRegistrationActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(StoreRegistrationActivity.this, String.valueOf(task.getException()), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                 }
+            }
+        });
+        userLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(StoreRegistrationActivity.this, StoreLoginActivity.class));
             }
         });
     }

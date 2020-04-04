@@ -79,7 +79,7 @@ public class SecondActivity extends AppCompatActivity {
                 fbase.signOut();
                 finish();
                 Toast.makeText(SecondActivity.this, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SecondActivity.this, MainActivity.class));
+                startActivity(new Intent(SecondActivity.this, LauncherActivity.class));
             }
         });
 
