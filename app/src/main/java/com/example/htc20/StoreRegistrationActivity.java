@@ -102,7 +102,9 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                sendEmailVerification(email);
+//                                sendEmailVerification(email);
+                                Toast.makeText(StoreRegistrationActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(StoreRegistrationActivity.this, StoreLoginActivity.class));
 
                             } else {
                                 Toast.makeText(StoreRegistrationActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
@@ -131,26 +133,26 @@ public class StoreRegistrationActivity extends AppCompatActivity {
         return result;
     }
 
-    private void sendEmailVerification(String email) {
-        final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        final String temp_email = firebaseUser.getEmail();
-        firebaseUser.updateEmail(email);
-        if (firebaseUser != null) {
-            firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(StoreRegistrationActivity.this, "A Verification Link has been sent to you E-mail", Toast.LENGTH_LONG).show();
-                        firebaseAuth.signOut();
-                        finish();
-                        if (temp_email != null) {
-                            firebaseUser.updateEmail(temp_email);
-                        }
-                    } else {
-                        Toast.makeText(StoreRegistrationActivity.this, "Please Try Again Later or check if entered email is correct", Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-        }
-    }
+//    private void sendEmailVerification(String email) {
+//        final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+//        final String temp_email = firebaseUser.getEmail();
+//        firebaseUser.updateEmail(email);
+//        if (firebaseUser != null) {
+//            firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                @Override
+//                public void onComplete(@NonNull Task<Void> task) {
+//                    if (task.isSuccessful()) {
+//                        Toast.makeText(StoreRegistrationActivity.this, "A Verification Link has been sent to you E-mail", Toast.LENGTH_LONG).show();
+//                        firebaseAuth.signOut();
+//                        finish();
+//                        if (temp_email != null) {
+//                            firebaseUser.updateEmail(temp_email);
+//                        }
+//                    } else {
+//                        Toast.makeText(StoreRegistrationActivity.this, "Please Try Again Later or check if entered email is correct", Toast.LENGTH_LONG).show();
+//                    }
+//                }
+//            });
+//        }
+//    }
 }
