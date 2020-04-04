@@ -9,31 +9,37 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class DashboardStoreActivity extends AppCompatActivity {
 
-    ImageView imageView;
+    ImageView imageView_entry, imageView_exit;
     Button button;
     EditText qrCodeText;
+    private FirebaseAuth fbAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard_store);
 
-        button = findViewById(R.id.btn_getQrCode);
-        qrCodeText = findViewById(R.id.et_qrCodeText);
-        imageView = findViewById(R.id.img_qrCodeImage);
+        fbAuth = FirebaseAuth.getInstance();
+        imageView_entry = findViewById(R.id.img_qrCodeEntry);
+        imageView_exit = findViewById(R.id.img_qrCodeExit);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text = qrCodeText.getText().toString();
-                if (!text.equals("")) {
-                    new ImageDownloaderTask(imageView).execute("https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=" + text);
-                } else {
-                    Toast.makeText(DashboardStoreActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        FirebaseUser user = fbAuth.getCurrentUser();
+        String email = user.getEmail().toString();
+
+        int index = email.indexOf('@');
+        String unique_id = email.substring(0, index);
+
+        String text_entry = unique_id + "entry";
+        String text_exit = unique_id + "exit";
+
+        new ImageDownloaderTask(imageView_entry).execute("https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=" + text_entry);
+        new ImageDownloaderTask(imageView_exit).execute("https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=" + text_exit);
+
+
     }
 }

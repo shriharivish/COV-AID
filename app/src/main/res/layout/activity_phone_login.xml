@@ -35,7 +35,7 @@
         app:layout_constraintVertical_bias="0.129" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/img_qrCodeEntry"
         android:layout_width="147dp"
         android:layout_height="126dp"
         app:srcCompat="@drawable/login1"

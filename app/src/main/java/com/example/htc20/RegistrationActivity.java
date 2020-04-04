@@ -80,7 +80,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     user.put("phone_number", user_phoneNumber);
                     user.put("email", user_email);
                     db.collection("citizen")
-                            .document(user_email+String.valueOf(user_phoneNumber))
+                            .document(user_email + String.valueOf(user_phoneNumber))
                             .set(user)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override

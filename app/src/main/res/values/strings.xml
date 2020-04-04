@@ -63,5 +63,8 @@
     <string name="open">open</string>
     <string name="distance_will_appear_here">Distance will Appear Here</string>
     <string name="open_maps_activity">Open Maps Activity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
 
