@@ -3,6 +3,7 @@ package com.example.htc20;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ public class DashboardCitizenActivity extends AppCompatActivity {
     private Button getHospitals;
     private FloatingActionButton Fab;
     private final int REQUEST_LOCATION_PERMISSION = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class DashboardCitizenActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
+        Log.d("requestCode", "value : "+requestCode);
         // Forward results to EasyPermissions
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
@@ -60,6 +62,7 @@ public class DashboardCitizenActivity extends AppCompatActivity {
         }
         else {
             EasyPermissions.requestPermissions(this, "Please grant the location permission", REQUEST_LOCATION_PERMISSION, perms);
+
         }
     }
 }

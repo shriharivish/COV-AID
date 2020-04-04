@@ -29,7 +29,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Button openMaps;
     private FusedLocationProviderClient client;
-    private final int REQUEST_LOCATION_PERMISSION = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
