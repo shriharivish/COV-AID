@@ -24,12 +24,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    GoogleMap mMap;
     private TextView distance;
 
     private Button openMaps;
     private FusedLocationProviderClient client;
-
+    double Latitude = 0;
+    double Longitude = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +48,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onSuccess(Location location) {
                 if (location != null){
-                    final double Latitude = location.getLatitude();
-                    final double Longitude = location.getLongitude();
-                    LatLng myLatLng = new LatLng(Latitude, Longitude);
-                    LatLng destLatLng = new LatLng(Latitude -0.01,Longitude-0.01);
-                    mMap.addMarker(new MarkerOptions().position(myLatLng).title("My Location"));
-                    mMap.addMarker(new MarkerOptions().position(destLatLng).title("My Destination"));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(destLatLng));
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+                    Latitude = location.getLatitude();
+                    Longitude = location.getLongitude();
+
 
                     //open maps by clicking on the button
                     openMaps = (Button) findViewById(R.id.op_maps);
@@ -88,9 +82,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-
-
-
      /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -102,16 +93,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        this.mMap = googleMap;
 
-        //get my location
-
-
-        // Add a marker at both locations and move the camera
-        //mMap.addMarker(new MarkerOptions().position(myLatLng).title("My Location"));
-        //mMap.addMarker(new MarkerOptions().position(destLoc).title("Destination"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(myLoc));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(destLoc));
+        //get my map
+        LatLng myLatLng = new LatLng(Latitude, Longitude);
+        LatLng destLatLng = new LatLng(Latitude -0.01,Longitude-0.01);
+        mMap.addMarker(new MarkerOptions().position(myLatLng).title("My Location"));
+        mMap.addMarker(new MarkerOptions().position(destLatLng).title("My Destination"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(destLatLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
     }
 
 
