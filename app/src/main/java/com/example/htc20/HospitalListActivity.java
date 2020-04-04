@@ -70,7 +70,7 @@ public class HospitalListActivity extends AppCompatActivity {
 
             }
         });
-
+        //
         client = LocationServices.getFusedLocationProviderClient(this);
         client.getLastLocation().addOnSuccessListener(HospitalListActivity.this, new OnSuccessListener<Location>() {
             @Override
