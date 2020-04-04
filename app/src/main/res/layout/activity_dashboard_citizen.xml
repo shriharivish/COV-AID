@@ -34,7 +34,7 @@
                         android:layout_height="230dp"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:background="@drawable/background">
+                        android:background="@drawable/wallpaper">
 
                         <ImageView
                             android:layout_width="90dp"
@@ -96,7 +96,7 @@
                                     android:id="@+id/imageView2"
                                     android:layout_width="50dp"
                                     android:layout_height="50dp"
-                                    android:src="@drawable/chineseboy"
+                                    android:src="@drawable/doctorwebicon"
                                     android:layout_gravity="center" />
 
                                 <Button
@@ -133,7 +133,7 @@
                                     android:id="@+id/imageView1"
                                     android:layout_width="50dp"
                                     android:layout_height="50dp"
-                                    android:src="@drawable/chineseboy"
+                                    android:src="@drawable/doctorwebicon"
                                     android:layout_gravity="center" />
 
                                 <Button
@@ -179,7 +179,7 @@
                                     android:id="@+id/imageView3"
                                     android:layout_width="50dp"
                                     android:layout_height="50dp"
-                                    android:src="@drawable/chineseboy"
+                                    android:src="@drawable/doctorwebicon"
                                     android:layout_gravity="center" />
 
                                 <Button
@@ -216,7 +216,7 @@
                                     android:id="@+id/imageView4"
                                     android:layout_width="50dp"
                                     android:layout_height="50dp"
-                                    android:src="@drawable/chineseboy"
+                                    android:src="@drawable/doctorwebicon"
                                     android:layout_gravity="center" />
 
                                 <Button
