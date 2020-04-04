@@ -151,6 +151,14 @@ public class SecondActivity extends AppCompatActivity {
                 int value_tpe = item.getValueType();
                 switch (value_tpe) {
                     case FirebaseVisionBarcode.TYPE_TEXT: {
+                        String text = item.getRawValue();
+                        if (isSubstring("entry", text) != -1) {
+                            createDialog("Entry has been recorded!");
+                        } else if (isSubstring("exit", text) != -1) {
+                            createDialog("Exit has been recorded!");
+                        } else {
+                            createDialog("Code is not recognized!");
+                        }
 
 
                     }
@@ -195,6 +203,27 @@ public class SecondActivity extends AppCompatActivity {
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    static int isSubstring(String s1, String s2) {
+        int M = s1.length();
+        int N = s2.length();
+
+        /* A loop to slide pat[] one by one */
+        for (int i = 0; i <= N - M; i++) {
+            int j;
+
+            /* For current index i, check for
+            pattern match */
+            for (j = 0; j < M; j++)
+                if (s2.charAt(i + j) != s1.charAt(j))
+                    break;
+
+            if (j == M)
+                return i;
+        }
+
+        return -1;
     }
 
 }
