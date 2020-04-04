@@ -2,7 +2,6 @@ package com.example.htc20;
 
 import android.Manifest;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,10 +17,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -39,7 +34,6 @@ public class DashboardActivity extends AppCompatActivity {
     private FirebaseAuth fbase;
     private MenuItem logout;
     private final int REQUEST_LOCATION_PERMISSION = 1;
-    private FusedLocationProviderClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,21 +72,6 @@ public class DashboardActivity extends AppCompatActivity {
         });
         requestLocationPermission();
 
-        client = LocationServices.getFusedLocationProviderClient(this);
-        client.getLastLocation().addOnSuccessListener(DashboardActivity.this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null){
-                    final double Latitude = location.getLatitude();
-                    final double Longitude = location.getLongitude();
-                    LatLng myLatLng = new LatLng(Latitude, Longitude);
-                    //the code to retrieve nearby places will be written below
-
-                }
-            }
-        });
-
-
         openMapsActivity = findViewById(R.id.btn_MapsActivity);
         openMapsActivity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +80,8 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -147,3 +128,4 @@ public class DashboardActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 }
+
