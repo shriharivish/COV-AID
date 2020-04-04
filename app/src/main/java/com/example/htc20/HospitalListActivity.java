@@ -48,7 +48,7 @@ public class HospitalListActivity extends AppCompatActivity {
                     String data = "";
                     InputStream iStream = null;
                     HttpURLConnection urlConnection = null;
-                    String strUrl = getUrl(Latitude, Longitude, "restaurant");
+                    String strUrl = getUrl(Latitude, Longitude, "hospital");
                     //String will contain the json output
                     String jsonOutput = null;
                     try {
