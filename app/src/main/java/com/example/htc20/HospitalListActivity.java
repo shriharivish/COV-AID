@@ -45,13 +45,7 @@ public class HospitalListActivity extends AppCompatActivity {
 
         final ListView listview = (ListView) findViewById(R.id.lv_hospitalList);
 
-        mapsAcitivity = findViewById(R.id.btn_mapsActivityLauncher);
-        mapsAcitivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HospitalListActivity.this, MapsActivity.class));
-            }
-        });
+
         final ArrayList<String> list = new ArrayList<String>();
 
 
@@ -122,7 +116,13 @@ public class HospitalListActivity extends AppCompatActivity {
 
             }
         });
-
+        mapsAcitivity = findViewById(R.id.btn_mapsActivityLauncher);
+        mapsAcitivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HospitalListActivity.this, MapsActivity.class));
+            }
+        });
 
     }
 

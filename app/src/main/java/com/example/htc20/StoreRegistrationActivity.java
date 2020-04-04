@@ -1,5 +1,6 @@
 package com.example.htc20;
 
+import android.Manifest;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -31,6 +32,9 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import java.util.HashMap;
 import java.util.Map;
 
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
+
 public class StoreRegistrationActivity extends AppCompatActivity {
     private EditText userEmail, uniqueID, shopName;
     private TextInputEditText userPassword;
@@ -41,6 +45,7 @@ public class StoreRegistrationActivity extends AppCompatActivity {
     private MapsActivity map;
     private Spinner service_category;
     private FusedLocationProviderClient client;
+    private final int REQUEST_LOCATION_PERMISSION = 1;
 
     private static final String TAG = "DocSnippets";
 
@@ -67,6 +72,7 @@ public class StoreRegistrationActivity extends AppCompatActivity {
         // map = (MapActivity)......................
 
         //get location
+        requestLocationPermission();
         client = LocationServices.getFusedLocationProviderClient(this);
         client.getLastLocation().addOnSuccessListener(StoreRegistrationActivity.this, new OnSuccessListener<Location>() {
             @Override
@@ -141,6 +147,27 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                 startActivity(new Intent(StoreRegistrationActivity.this, StoreLoginActivity.class));
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d("requestCode", "value : "+requestCode);
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @AfterPermissionGranted(REQUEST_LOCATION_PERMISSION)
+    public void requestLocationPermission() {
+        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
+        if(EasyPermissions.hasPermissions(this, perms)) {
+            Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show();
+
+        }
+        else {
+            EasyPermissions.requestPermissions(this, "Please grant the location permission", REQUEST_LOCATION_PERMISSION, perms);
+
+        }
     }
 
     private Boolean validate() {
