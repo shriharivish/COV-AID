@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "642620725032-s7r1k302okcomfj68up9sb4lk2gpkolt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.htc20",
+            "certificate_hash": "278de36fbb5fef5ae72366928b2b5a778ee9be5c"
+          }
+        },
+        {
           "client_id": "642620725032-rqed0gfr41fvconib63ses9guka1ou10.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
