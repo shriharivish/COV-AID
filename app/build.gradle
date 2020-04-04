@@ -3,7 +3,7 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion '29.0.3'
     defaultConfig {
         applicationId "com.example.htc20"
         minSdkVersion 19
@@ -19,6 +19,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility = 1.7
+        targetCompatibility = 1.7
     }
 }
 
@@ -49,6 +53,7 @@ dependencies {
     //Libraries
     implementation 'com.karumi:dexter:4.2.0'
     implementation 'com.otaliastudios:cameraview:2.0.0-rc1'
+    implementation 'androidx.cardview:cardview:1.0.0'
 }
 
 configurations.all {
