@@ -12,12 +12,20 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +38,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class HospitalListActivity extends AppCompatActivity {
@@ -45,7 +55,6 @@ public class HospitalListActivity extends AppCompatActivity {
     double Longitude = 0;
     int count = 1;
 
-    //    int count = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +90,7 @@ public class HospitalListActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Location location) {
                 if (location != null){
+                    FirebaseFirestore db;
                     Latitude = location.getLatitude();
                     Longitude = location.getLongitude();
                     LatLng myLatLng = new LatLng(Latitude, Longitude);
@@ -91,6 +101,8 @@ public class HospitalListActivity extends AppCompatActivity {
                     String strUrl = getUrl(Latitude, Longitude, "hospital");
                     //String will contain the json output
                     String jsonOutput = null;
+
+                    db = FirebaseFirestore.getInstance();
                     try {
                         jsonOutput = new RequestJsonPlaces().execute(strUrl).get();
                         Log.d("mytag", "values : "+ jsonOutput);
@@ -109,17 +121,32 @@ public class HospitalListActivity extends AppCompatActivity {
                             Longitudes = new double[placesCount];
                             Log.d("Loctag", "value: "+ placesCount);
                             for (int i = 0; i < placesCount; i++) {
-                                try {
+                                try{
                                     jsonObject = (JSONObject) jsonArray.get(i);
                                     HospitalName  = jsonObject.getString("name");
                                     HospitalLat = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lat");
-                                    HospitalLong = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lng");
+                                    HospitalLong = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lat");
                                     Log.d("Latitudes", "valueLat :"+HospitalLat);
                                     Log.d("Longitudes","valueLong : "+HospitalLong);
-                                    Log.d("Names","valueName : "+HospitalName);
                                     Latitudes[i] = Double.parseDouble(HospitalLat);
                                     Longitudes[i] = Double.parseDouble(HospitalLong);
-                                    list.add(count + ". " + HospitalName + "\t\t: 0");
+                                    CollectionReference ref = db.collection("store");
+                                    Query query = ref.whereEqualTo("latitude", Latitudes[i]).whereEqualTo("longitude", Longitudes[i]);
+                                    final Map<String, Integer> user = new HashMap<>();
+                                    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            int lcc;
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    lcc = Integer.parseInt((String) document.getData().get("lcc"));
+                                                    user.put("lcc", lcc);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    Integer lcc = user.get("lcc");
+                                    list.add(count + ". " + HospitalName + "\t\t: " + String.valueOf(lcc);
                                     count++;
                                     adapter.notifyDataSetChanged();
                                     //parsing to be done
