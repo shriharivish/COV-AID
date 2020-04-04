@@ -6,23 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".MapsActivity">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="400dp"
         android:layout_height="400dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.053"
-        tools:context=".MapsActivity"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintVertical_bias="0.054"
+        tools:context=".MapsActivity" />
 
     <TextView
         android:id="@+id/tv_distance"
         android:layout_width="187dp"
         android:layout_height="49dp"
-        android:text="Distance will Appear Here"
+        android:text="@string/distance_will_appear_here"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +33,7 @@
         android:id="@+id/op_maps"
         android:layout_width="80dp"
         android:layout_height="40dp"
-        android:text="open"
+        android:text="@string/open"
         app:layout_constraintBottom_toBottomOf="@id/map"
         app:layout_constraintEnd_toEndOf="@id/map"
         app:layout_constraintStart_toStartOf="@id/map"

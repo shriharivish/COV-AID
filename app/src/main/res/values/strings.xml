@@ -24,6 +24,29 @@
     <string name="password">Password</string>
     <string name="enter_phone_number">Enter Phone Number</string>
     <string name="title_activity_maps">Map</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="log_in">Log In</string>
+    <string name="not_registered_sign_up">Not Registered? Sign Up</string>
+    <string name="login_in_with_phone">Login In with phone</string>
+    <string name="enter_uniqueID">Enter Unique ID</string>
+
+    <string name="set_uniqueID">Set Unique ID</string>
+    <string name="set_password">Set Password</string>
+    <string name="shop_name">Enter Shop Name</string>
+    <string name="shop_loc">Provide Shop Location</string>
+    <string name="shop_type">Provide Shop Type</string>
+    <string name="service_prompt">Choose a Service category</string>
+
+    <string-array name="service_arrays">
+        <item>Hospitals</item>
+        <item>Medical Stores</item>
+        <item>Supermarkets</item>
+        <item>Grocery Shops</item>
+        <item>Banks</item>
+        <item>ATMs</item>
+    </string-array>
+
+
     <string name="title_activity_dash">dash</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -37,4 +60,8 @@
     <string name="todo">TODO</string>
     <string name="_91">+91</string>
     <string name="login">Login As</string>
+    <string name="open">open</string>
+    <string name="distance_will_appear_here">Distance will Appear Here</string>
+    <string name="open_maps_activity">Open Maps Activity</string>
 </resources>
+

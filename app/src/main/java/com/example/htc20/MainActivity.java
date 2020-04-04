@@ -7,9 +7,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 //import android.text.method.PasswordTransformationMethod;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,13 +20,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText Email, Password;
+    private EditText Email;
+    private TextInputEditText Password;
 
     private Button Login;
     private Button LoginPhone;
@@ -40,37 +45,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Email = findViewById(R.id.etEmail);
-        Password = findViewById(R.id.etPassword);
-        Login = findViewById(R.id.btnLogin);
-        LoginPhone = findViewById(R.id.btnLoginPhone);
-        Register = findViewById(R.id.tvRegister);
-        progressBarLogin = findViewById(R.id.pb_Login);
-//        PassVisibility = (ToggleButton)findViewById(R.id.tbPassVisibility);
-
-//        PassVisibility.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(Password.getText().toString().isEmpty())
-//                {
-//                    Password.setError("Please Enter Password");
-//                }
-//
-//                else
-//                {
-//                    if(PassVisibility.getText().toString().equals("Show Password"))
-//                    {
-//                        PassVisibility.setText("Hide Password");
-//                        Password.setTransformationMethod(null);
-//                    }
-//
-//                    else {
-//                        PassVisibility.setText("Show Password");
-//                        Password.setTransformationMethod(new PasswordTransformationMethod());
-//                    }
-//                }
-//            }
-//        });
+        Email = (EditText) findViewById(R.id.etEmail);
+        Password = (TextInputEditText) findViewById(R.id.etPassword);
+        Login = (Button) findViewById(R.id.btnLogin);
+        LoginPhone = (Button) findViewById(R.id.btnLoginPhone);
+        Register = (TextView) findViewById(R.id.tvRegister);
+        progressBarLogin = (ProgressBar) findViewById(R.id.pb_Login);
 
         fbauth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);

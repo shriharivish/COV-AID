@@ -6,4 +6,72 @@
     android:layout_height="match_parent"
     tools:context=".StoreLoginActivity">
 
+    <Button
+        android:id="@+id/etLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:hint="@string/log_in"
+        android:text="@string/log_in"
+        app:layout_constraintBottom_toTopOf="@+id/etNotRegistered"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editUniqueID"
+        app:layout_constraintVertical_bias="0.731" />
+
+    <EditText
+        android:id="@+id/editUniqueID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/enter_uniqueID"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.354" />
+
+    <ProgressBar
+        android:id="@+id/pb_Login"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="8dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="28dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/etNotRegistered"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etLogin" />
+
+    <TextView
+        android:id="@+id/etNotRegistered"
+        android:layout_width="285dp"
+        android:layout_height="37dp"
+        android:layout_marginBottom="108dp"
+        android:hint="@string/not_registered_sign_up"
+        android:text="@string/not_registered_sign_up"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etPassLayout"
+        android:layout_width="213dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/etLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editUniqueID"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_password"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

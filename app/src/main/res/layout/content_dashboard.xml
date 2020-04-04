@@ -23,7 +23,7 @@
         android:id="@+id/btn_MapsActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open Maps Activity"
+        android:text="@string/open_maps_activity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/nav_host_fragment"

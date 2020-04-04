@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,14 +29,15 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegistrationActivity extends AppCompatActivity {
-
-    private EditText userFirstName, userEmail, userLastName, userPhoneNumber;
+public class StoreRegistrationActivity extends AppCompatActivity {
+    private EditText userEmail, uniqueID, shopName;
     private TextInputEditText userPassword;
     private Button register;
     private TextView userLogin;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
+    private MapsActivity map;
+    private Spinner service_category;
 
     private static final String TAG = "DocSnippets";
 
@@ -47,19 +49,19 @@ public class RegistrationActivity extends AppCompatActivity {
         db.setFirestoreSettings(settings);
     }
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_store_registration);
 
-        userFirstName = (EditText) findViewById(R.id.etFirstName);
-        userLastName = (EditText) findViewById(R.id.etLastName);
-        userPhoneNumber = (EditText) findViewById(R.id.etPhoneNumber);
-        userPassword = (TextInputEditText) findViewById(R.id.etUserPassword);
-        userEmail = (EditText) findViewById(R.id.etUserEmail);
-        userLogin = (TextView) findViewById(R.id.tvLogin);
-        register = (Button) findViewById(R.id.btnRegister);
+        userPassword = (TextInputEditText) findViewById(R.id.etSetPassword);
+        userEmail = (EditText) findViewById(R.id.etEmail);
+        userLogin = (TextView) findViewById(R.id.etNotLogin);
+        register = (Button) findViewById(R.id.etRegister);
+        uniqueID = (EditText) findViewById(R.id.etUniqueID);
+        shopName = (EditText) findViewById(R.id.etShopName);
+        service_category = (Spinner) findViewById(R.id.etCategories);
+        // map = (MapActivity)......................
 
         firebaseAuth = FirebaseAuth.getInstance();
 //        setup();
@@ -68,18 +70,19 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (validate()) {
-                    String user_email = userEmail.getText().toString().trim();
-                    String user_pass = userPassword.getText().toString().trim();
-                    String user_firstName = userFirstName.getText().toString().trim();
-                    String user_lastName = userLastName.getText().toString().trim();
-                    Long user_phoneNumber = Long.parseLong(userPhoneNumber.getText().toString().trim());
+                    final String email = userEmail.getText().toString().trim();
+                    String pass = userPassword.getText().toString().trim();
+                    String strUniqueID = uniqueID.getText().toString().trim();
+                    String shop_name = shopName.getText().toString().trim();
+                    String category = String.valueOf(service_category.getSelectedItem());
 
                     Map<String, Object> user = new HashMap<>();
-                    user.put("first_name", user_firstName);
-                    user.put("last_name", user_lastName);
-                    user.put("phone_number", user_phoneNumber);
-                    user.put("email", user_email);
-                    db.collection("citizen")
+                    user.put("unique_id", strUniqueID);
+                    user.put("email", email);
+                    user.put("shop_name", shop_name);
+                    user.put("service_category", category);
+
+                    db.collection("store")
                             .add(user)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
@@ -94,62 +97,57 @@ public class RegistrationActivity extends AppCompatActivity {
                                 }
                             });
 
-                    firebaseAuth.createUserWithEmailAndPassword(user_email, user_pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    String temp_email = uniqueID + "@htc2020.com";
+                    firebaseAuth.createUserWithEmailAndPassword(temp_email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                sendEmailVerification();
+                                sendEmailVerification(email);
 
                             } else {
-                                Toast.makeText(RegistrationActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(StoreRegistrationActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                 }
             }
         });
-
-        userLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
-            }
-        });
-
     }
 
     private Boolean validate() {
         Boolean result = false;
-        String firstName = userFirstName.getText().toString();
-        String lastName = userLastName.getText().toString();
+        String strUniqueID = uniqueID.getText().toString();
         String email = userEmail.getText().toString();
         String password = userPassword.getText().toString();
-        String temp = userPhoneNumber.getText().toString().trim();
-        Long phoneNumber = Long.parseLong(temp);
+        String shop_name = shopName.getText().toString();
+        String category = String.valueOf(service_category.getSelectedItem());
 
-        if (firstName.isEmpty() || email.isEmpty() || password.isEmpty() || lastName.isEmpty() || phoneNumber == null) {
+        if (strUniqueID.isEmpty() || email.isEmpty() || password.isEmpty() || category.equalsIgnoreCase("Choose a Service category") || shop_name.isEmpty()) {
             Toast.makeText(this, "Please Enter All Details", Toast.LENGTH_SHORT).show();
         }
         else {
             result = true;
         }
-
         return result;
     }
 
-    private void sendEmailVerification() {
+    private void sendEmailVerification(String email) {
         final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        final String temp_email = firebaseUser.getEmail();
+        firebaseUser.updateEmail(email);
         if (firebaseUser != null) {
             firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(RegistrationActivity.this, "A Verification Link has been sent to you E-mail", Toast.LENGTH_LONG).show();
+                        Toast.makeText(StoreRegistrationActivity.this, "A Verification Link has been sent to you E-mail", Toast.LENGTH_LONG).show();
                         firebaseAuth.signOut();
                         finish();
-                        startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
+                        if (temp_email != null) {
+                            firebaseUser.updateEmail(temp_email);
+                        }
                     } else {
-                        Toast.makeText(RegistrationActivity.this, "Please Try Again Later", Toast.LENGTH_LONG).show();
+                        Toast.makeText(StoreRegistrationActivity.this, "Please Try Again Later or check if entered email is correct", Toast.LENGTH_LONG).show();
                     }
                 }
             });

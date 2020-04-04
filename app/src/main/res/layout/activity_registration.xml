@@ -28,31 +28,15 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
+        android:layout_marginTop="128dp"
         android:autofillHints=""
         android:ems="10"
         android:fontFamily="serif-monospace"
         android:hint="@string/enter_email"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/etUserPassword"
+        app:layout_constraintBottom_toTopOf="@+id/etPassLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etFirstName"
-        tools:visibility="visible" />
-
-    <EditText
-        android:id="@+id/etUserPassword"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="0dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:fontFamily="serif-monospace"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etFirstName"
         tools:visibility="visible" />
@@ -65,7 +49,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etUserPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/etPassLayout"
+        app:layout_constraintVertical_bias="0.341" />
 
     <TextView
         android:id="@+id/tvLogin"
@@ -116,9 +101,30 @@
         android:fontFamily="serif-monospace"
         android:hint="@string/enter_phone_number"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/etUserPassword"
+        app:layout_constraintBottom_toTopOf="@+id/etPassLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etUserEmail" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etPassLayout"
+        android:layout_width="198dp"
+        android:layout_height="51dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:passwordToggleEnabled="true"
+        app:layout_constraintTop_toBottomOf="@+id/etFirstName">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etUserPassword"
+            android:ems="10"
+            android:fontFamily="serif-monospace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/set_password"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
