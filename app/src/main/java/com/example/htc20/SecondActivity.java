@@ -42,7 +42,6 @@ import java.util.Map;
 
 public class SecondActivity extends AppCompatActivity {
 
-    private Button Logout;
     private FirebaseAuth fbase;
     CameraView cameraView;
     boolean isDetected = false;
@@ -55,7 +54,6 @@ public class SecondActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-        Logout = (Button) findViewById(R.id.btnLogout);
         fbase = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
@@ -72,16 +70,6 @@ public class SecondActivity extends AppCompatActivity {
 
                     }
                 }).check();
-
-        Logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fbase.signOut();
-                finish();
-                Toast.makeText(SecondActivity.this, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SecondActivity.this, LauncherActivity.class));
-            }
-        });
 
 
     }

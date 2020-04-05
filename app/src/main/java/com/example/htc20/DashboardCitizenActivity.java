@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -20,8 +22,9 @@ public class DashboardCitizenActivity extends AppCompatActivity {
     private Button getHospitals;
     private FloatingActionButton Fab;
     private final int REQUEST_LOCATION_PERMISSION = 1;
+    private FirebaseAuth fbAuth;
 
-
+    private Button signOut;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,7 @@ public class DashboardCitizenActivity extends AppCompatActivity {
             }
         });
 
+        fbAuth = FirebaseAuth.getInstance();
         Fab = findViewById(R.id.fab_scanQR);
         Fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +47,17 @@ public class DashboardCitizenActivity extends AppCompatActivity {
         });
 
         requestLocationPermission();
+
+        signOut = findViewById(R.id.btn_signout);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fbAuth.signOut();
+                finish();
+                startActivity(new Intent(DashboardCitizenActivity.this, LauncherActivity.class));
+
+            }
+        });
     }
     //permission
     @Override
