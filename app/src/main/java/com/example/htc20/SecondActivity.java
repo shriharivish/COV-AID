@@ -132,6 +132,7 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     private void processResult(List<FirebaseVisionBarcode> firebaseVisionBarcodes) {
+        // Add code to push the lcc updates to database
         if (firebaseVisionBarcodes.size() > 0) {
             isDetected = true;
             btn_start_again.setEnabled(isDetected);

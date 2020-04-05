@@ -106,15 +106,17 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                             if (location != null){
                                 Latitude =  location.getLatitude();
                                 Longitude = location.getLongitude();
-                                Log.d("Latitude", "value: "+Latitude);
+                                Log.d("Latitude", "value: " + Latitude);
                                 //GeoPoint gp = new GeoPoint(Latitude , Longitude);
                                 //Log.d("gp", "val: "+gp);
                                 //user.put("shop_loc", gp);
                             }
                         }
                     });
-                        user.put("latitude",Latitude);
-                        user.put("longitude",Longitude);
+                    int lcc = 0;
+                    user.put("lcc", 0);
+                    user.put("latitude", Latitude);
+                    user.put("longitude", Longitude);
                     db.collection("store")
                             .document(strUniqueID)
                             .set(user)
