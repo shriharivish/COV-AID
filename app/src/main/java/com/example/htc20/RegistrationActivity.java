@@ -145,7 +145,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(RegistrationActivity.this, "A Verification Link has been sent to you E-mail", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegistrationActivity.this, "A Verification Link has been sent to your E-mail: " + firebaseUser.getEmail(), Toast.LENGTH_LONG).show();
                         firebaseAuth.signOut();
                         finish();
                         startActivity(new Intent(RegistrationActivity.this, MainActivity.class));

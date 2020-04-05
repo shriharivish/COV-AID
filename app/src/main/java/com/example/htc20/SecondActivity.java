@@ -134,7 +134,6 @@ public class SecondActivity extends AppCompatActivity {
     private void processResult(List<FirebaseVisionBarcode> firebaseVisionBarcodes) {
         // Add code to push the lcc updates to database
         if (firebaseVisionBarcodes.size() > 0) {
-            isDetected = true;
             btn_start_again.setEnabled(isDetected);
             for (FirebaseVisionBarcode item : firebaseVisionBarcodes) {
                 int value_tpe = item.getValueType();
@@ -143,8 +142,11 @@ public class SecondActivity extends AppCompatActivity {
                         String text = item.getRawValue();
                         if (isSubstring("entry", text) != -1) {
                             createDialog("Entry has been recorded!");
+                            startActivity(new Intent(SecondActivity.this, DashboardCitizenActivity.class));
+
                         } else if (isSubstring("exit", text) != -1) {
                             createDialog("Exit has been recorded!");
+                            startActivity(new Intent(SecondActivity.this, DashboardCitizenActivity.class));
                         } else {
                             createDialog("Code is not recognized!");
                         }
