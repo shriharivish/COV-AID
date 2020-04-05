@@ -11,7 +11,9 @@
         android:layout_width="431dp"
         android:layout_height="495dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:listSelector="@drawable/listview_colours"
+        android:background="#FF8C00" />
 
     <Button
         android:id="@+id/btn_mapsActivityLauncher"
