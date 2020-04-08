@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -20,6 +19,9 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class DashboardCitizenActivity extends AppCompatActivity {
 
     private Button getHospitals;
+    private Button getStores;
+    private Button getBanksATMs;
+    private Button getGroceries;
     private FloatingActionButton Fab;
     private final int REQUEST_LOCATION_PERMISSION = 1;
     private FirebaseAuth fbAuth;
@@ -29,11 +31,44 @@ public class DashboardCitizenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard_citizen);
+        //view nearby hospitals and pharmacies
         getHospitals = findViewById(R.id.btn_viewHospitals);
         getHospitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DashboardCitizenActivity.this, HospitalListActivity.class));
+                Intent i = new Intent(DashboardCitizenActivity.this, PlaceListActivity.class);
+                i.putExtra("number", 1);
+                startActivity(i);
+            }
+        });
+        // view nearby department stores
+        getStores = findViewById(R.id.btn_DepartmentStores);
+        getStores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DashboardCitizenActivity.this, PlaceListActivity.class);
+                i.putExtra("number", 2);
+                startActivity(i);
+            }
+        });
+        //view nearby banks and atms
+        getBanksATMs = findViewById(R.id.btn_viewBanks);
+        getBanksATMs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DashboardCitizenActivity.this, PlaceListActivity.class);
+                i.putExtra("number", 3);
+                startActivity(i);
+            }
+        });
+        // view nearby groceries and supermarkets
+        getGroceries = findViewById(R.id.btn_Groceries);
+        getGroceries.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DashboardCitizenActivity.this, PlaceListActivity.class);
+                i.putExtra("number", 4);
+                startActivity(i);
             }
         });
 

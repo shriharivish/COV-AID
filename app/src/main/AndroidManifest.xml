@@ -6,11 +6,11 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
-
     <permission
         android:name="your.package.name.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="your.package.name.permission.MAPS_RECEIVE"/>
+
+    <uses-permission android:name="your.package.name.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -28,7 +28,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DashboardCitizenActivity"></activity>
+        <activity android:name=".DashboardCitizenActivity" />
         <activity android:name=".StoreRegistrationActivity">
 
             <!-- <intent-filter> -->
@@ -38,7 +38,7 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".HospitalListActivity" />
+        <activity android:name=".PlaceListActivity" />
         <activity android:name=".StoreLoginActivity" />
         <activity android:name=".DashboardStoreActivity" />
         <activity android:name=".LauncherActivity">
@@ -63,7 +63,6 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-
         <activity android:name=".VerifyPhoneActivity" />
         <activity android:name=".PhoneLoginActivity" />
 

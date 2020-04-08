@@ -1,8 +1,6 @@
 package com.example.htc20;
 
-import android.content.Intent;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
