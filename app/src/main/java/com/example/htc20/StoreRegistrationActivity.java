@@ -40,7 +40,6 @@ public class StoreRegistrationActivity extends AppCompatActivity {
     private TextView userLogin;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
-    private MapsActivity map;
     private Spinner service_category;
     private FusedLocationProviderClient client;
     private final int REQUEST_LOCATION_PERMISSION = 1;
