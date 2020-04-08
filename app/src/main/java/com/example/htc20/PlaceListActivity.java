@@ -1,7 +1,9 @@
 package com.example.htc20;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
@@ -13,6 +15,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -122,6 +126,9 @@ public class PlaceListActivity extends AppCompatActivity {
     private void setupList(final ListView listview) {
         final ArrayList<String> list = new ArrayList<String>();
 
+        //specify the type of service
+        Bundle extras = getIntent().getExtras();
+        final int store_type = extras.getInt("number");
 
         final ArrayAdapter adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, list);
@@ -133,39 +140,43 @@ public class PlaceListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String n = listview.getItemAtPosition(position).toString();
                 final int index = n.charAt(0) - '1';
+
                 //add pop up with two buttons
-                Dialog dialog = new Dialog(PlaceListActivity.this);
-                dialog.setContentView(R.layout.custom_dialog_layout);
-                Button order = (Button)dialog.getWindow().findViewById(R.id.btn_order);
-                Button directions = (Button)dialog.getWindow().findViewById(R.id.btn_directions);
-                order.setOnClickListener(new View.OnClickListener() {
-                    @SuppressLint("WrongConstant")
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(getApplicationContext(),"Enter your order", 200).show();
+                if(store_type == 1 || store_type == 2) {
+                    Dialog dialog = new Dialog(PlaceListActivity.this);
+                    dialog.setContentView(R.layout.custom_dialog_layout);
+                    Button order = (Button) dialog.getWindow().findViewById(R.id.btn_order);
+                    Button directions = (Button) dialog.getWindow().findViewById(R.id.btn_directions);
+                    order.setOnClickListener(new View.OnClickListener() {
+                        @SuppressLint("WrongConstant")
+                        @Override
+                        public void onClick(View v) {
+                            popUpEditText();
+                        }
+                    });
+                    directions.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-                    }
-                });
-                directions.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        Intent i = new Intent(android.content.Intent.ACTION_VIEW,
-                                Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + (Latitudes[index]) + "," + (Longitudes[index])));
-                        i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-                        startActivity(i);
-                    }
-                });
-                dialog.show();
-
+                            Intent i = new Intent(android.content.Intent.ACTION_VIEW,
+                                    Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + (Latitudes[index]) + "," + (Longitudes[index])));
+                            i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                            startActivity(i);
+                        }
+                    });
+                    dialog.show();
+                }else{
+                    Intent i = new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + (Latitudes[index]) + "," + (Longitudes[index])));
+                    i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                    startActivity(i);
+                }
 
             }
         });
 
-        //specify the type of service
-        Bundle extras = getIntent().getExtras();
-        final int store_type = extras.getInt("number");
-        //
+
+
         client = LocationServices.getFusedLocationProviderClient(this);
         client.getLastLocation().addOnSuccessListener(PlaceListActivity.this, new OnSuccessListener<Location>() {
             @Override
@@ -266,7 +277,7 @@ public class PlaceListActivity extends AppCompatActivity {
                 Uri gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude);
                 switch (store_type) {
                     case 1:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=pharmacy|drugstore"); break;
-                    case 2:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=grocery_or_supermarket");  break;
+                    case 2:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=grocery_or_supermarket|store");  break;
                     case 3:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=atm");  break;
                     case 4:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=department_store");
                     default:    Log.d("errtag", "Unexpected entry! check DashboardCitizenActivity");
@@ -284,76 +295,62 @@ public class PlaceListActivity extends AppCompatActivity {
     private JSONArray getAllresults(double Latitude,double  Longitude, String nearbyPlace) throws UnsupportedEncodingException, ExecutionException, InterruptedException, JSONException {
 
         String strUrl = null;
-        String next_page_token = "";
         String jsonOutput = null;
         JSONObject jsonObject = null;
 
-        strUrl = getUrl(Latitude, Longitude, nearbyPlace, next_page_token);
+        strUrl = getUrl(Latitude, Longitude, nearbyPlace);
         jsonOutput = new RequestJsonPlaces().execute(strUrl).get();
         jsonObject = new JSONObject((String) jsonOutput);
         Log.d("mytag","value:"+jsonObject);
         JSONArray jsonArray1 = jsonObject.getJSONArray("results");
         Log.d("mytag","value: "+jsonArray1.length());
-
-        //next_page_token = jsonObject.getString("next_page_token");
-
-        /*if(next_page_token != "") {
-            strUrl = getUrl(Latitude, Longitude, nearbyPlace, next_page_token);
-            jsonOutput = new RequestJsonPlaces().execute(strUrl).get();
-            Log.d("mytag","val:"+jsonOutput);
-            jsonObject = new JSONObject((String) jsonOutput);
-            JSONArray jsonArray2 = jsonObject.getJSONArray("results");
-            Log.d("mytag","value: "+jsonArray2.length());
-
-            next_page_token = "";
-            next_page_token = jsonObject.getString("next_page_token");
-
-            if (next_page_token == "") {
-                strUrl = getUrl(Latitude, Longitude, nearbyPlace, next_page_token);
-                jsonOutput = new RequestJsonPlaces().execute(strUrl).get();
-                jsonObject = new JSONObject((String) jsonOutput);
-                JSONArray jsonArray3 = jsonObject.getJSONArray("results");
-                Log.d("mytag","value: "+jsonArray2.length());
-                if (jsonArray2.length()>0 && jsonArray3.length()>0){
-                    // return concatArray(jsonArray1, jsonArray2, jsonArray3);
-                }
-            }
-*/
-       /*     if(jsonArray2.length()>0);
-                // return concatArray(jsonArray1, jsonArray2);
-        }*/
-
-        return  concatArray(jsonArray1);
+        return  jsonArray1;
     }
 
 
-    private String getUrl(double latitude, double longitude, String nearbyPlace, String next_page_token) throws UnsupportedEncodingException {
+    private String getUrl(double latitude, double longitude, String nearbyPlace) throws UnsupportedEncodingException {
 
         StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesUrl.append("location=" + latitude + "," + longitude);
         googlePlacesUrl.append("&radius="+PROXIMITY_RADIUS);
         googlePlacesUrl.append("&types=" + URLEncoder.encode(nearbyPlace,"UTF-8"));
         googlePlacesUrl.append("&sensor=false");
-        googlePlacesUrl.append("hasNextPage=true&nextPage()=true");
+        //googlePlacesUrl.append("hasNextPage=true&nextPage()=true");
         googlePlacesUrl.append("&key=" + "AIzaSyBpsUyOqhq0MOBN0abTsFFlrAa4WUqkzQQ");
-        if (next_page_token == "");
-        else
-            googlePlacesUrl.append("&pagetoken="+next_page_token);
-
         Log.d("getUrl", googlePlacesUrl.toString());
         return (googlePlacesUrl.toString());
     }
 
-    private JSONArray concatArray(JSONArray... arrs)
-            throws JSONException {
-        JSONArray result = new JSONArray();
-        for (JSONArray arr : arrs) {
-            for (int i = 0; i < arr.length(); i++) {
-                result.put(arr.get(i));
+    private void popUpEditText() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Please enter your order:");
+
+        final EditText input = new EditText(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            @SuppressLint("WrongConstant")
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                // do something here on OK
+                Toast.makeText(getApplicationContext(), "Enter your order", 200).show();
+                String myorder = input.getText().toString();
+                Log.d("myorder",myorder);
             }
-        }
-        Log.d("mytag","valres:"+result);
-        return result;
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
 
     }
 

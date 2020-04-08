@@ -18,10 +18,11 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class DashboardCitizenActivity extends AppCompatActivity {
 
-    private Button getHospitals;
-    private Button getStores;
-    private Button getBanksATMs;
+    private Button getPharmacies;
     private Button getGroceries;
+    private Button getBanks;
+    private Button getHospitals;
+
     private FloatingActionButton Fab;
     private final int REQUEST_LOCATION_PERMISSION = 1;
     private FirebaseAuth fbAuth;
@@ -31,9 +32,9 @@ public class DashboardCitizenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard_citizen);
-        //view nearby hospitals and pharmacies
-        getHospitals = findViewById(R.id.btn_viewHospitals);
-        getHospitals.setOnClickListener(new View.OnClickListener() {
+        //view nearby pharmacies
+        getPharmacies = findViewById(R.id.btn_viewPharmacies);
+        getPharmacies.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(DashboardCitizenActivity.this, PlaceListActivity.class);
@@ -41,9 +42,10 @@ public class DashboardCitizenActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        // view nearby department stores
-        getStores = findViewById(R.id.btn_DepartmentStores);
-        getStores.setOnClickListener(new View.OnClickListener() {
+
+        // view nearby groceries and supermarkets
+        getGroceries = findViewById(R.id.btn_Groceries);
+        getGroceries.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(DashboardCitizenActivity.this, PlaceListActivity.class);
@@ -51,9 +53,10 @@ public class DashboardCitizenActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
         //view nearby banks and atms
-        getBanksATMs = findViewById(R.id.btn_viewBanks);
-        getBanksATMs.setOnClickListener(new View.OnClickListener() {
+        getBanks = findViewById(R.id.btn_viewBanks);
+        getBanks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(DashboardCitizenActivity.this, PlaceListActivity.class);
@@ -61,9 +64,10 @@ public class DashboardCitizenActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        // view nearby groceries and supermarkets
-        getGroceries = findViewById(R.id.btn_Groceries);
-        getGroceries.setOnClickListener(new View.OnClickListener() {
+
+        // view nearby Hospitals
+        getHospitals = findViewById(R.id.btn_viewHospitals);
+        getHospitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(DashboardCitizenActivity.this, PlaceListActivity.class);

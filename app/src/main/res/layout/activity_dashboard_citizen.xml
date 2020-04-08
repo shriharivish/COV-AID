@@ -91,7 +91,8 @@
                                     android:layout_marginTop="10dp"
                                     android:layout_marginEnd="53dp"
                                     android:layout_marginBottom="15dp"
-                                    android:text="@string/hospitals"
+                                    android:layout_gravity="center"
+                                    android:text="@string/pharmacies"
                                     android:textSize="16sp" />
                             </RelativeLayout>
 
@@ -103,7 +104,7 @@
                                 android:src="@drawable/hospital" />
 
                             <Button
-                                android:id="@+id/btn_viewHospitals"
+                                android:id="@+id/btn_viewPharmacies"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="#0000ffff" />
@@ -174,7 +175,8 @@
                                     android:layout_marginTop="10dp"
                                     android:layout_marginEnd="53dp"
                                     android:layout_marginBottom="15dp"
-                                    android:text="@string/banks_atms"
+                                    android:layout_gravity="center"
+                                    android:text="@string/banks"
                                     android:textSize="16sp" />
                             </RelativeLayout>
 
@@ -211,7 +213,8 @@
                                     android:layout_alignParentBottom="true"
                                     android:layout_marginEnd="66dp"
                                     android:layout_marginBottom="11dp"
-                                    android:text="@string/stores"
+                                    android:layout_gravity="center"
+                                    android:text="@string/hospitals"
                                     android:textSize="16sp" />
                             </RelativeLayout>
 
@@ -220,10 +223,10 @@
                                 android:layout_width="91dp"
                                 android:layout_height="77dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/store" />
+                                android:src="@drawable/hospital" />
 
                             <Button
-                                android:id="@+id/btn_DepartmentStores"
+                                android:id="@+id/btn_viewHospitals"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="#0000ffff" />
