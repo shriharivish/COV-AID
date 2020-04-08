@@ -142,29 +142,65 @@ public class PlaceListActivity extends AppCompatActivity {
                 final int index = n.charAt(0) - '1';
 
                 //add pop up with two buttons
-                if(store_type == 1 || store_type == 2) {
+                if(store_type == 1 || store_type == 2 || store_type == 4) {
+
                     Dialog dialog = new Dialog(PlaceListActivity.this);
                     dialog.setContentView(R.layout.custom_dialog_layout);
-                    Button order = (Button) dialog.getWindow().findViewById(R.id.btn_order);
-                    Button directions = (Button) dialog.getWindow().findViewById(R.id.btn_directions);
-                    order.setOnClickListener(new View.OnClickListener() {
-                        @SuppressLint("WrongConstant")
-                        @Override
-                        public void onClick(View v) {
-                            popUpEditText();
-                        }
-                    });
-                    directions.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
 
-                            Intent i = new Intent(android.content.Intent.ACTION_VIEW,
-                                    Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + (Latitudes[index]) + "," + (Longitudes[index])));
-                            i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-                            startActivity(i);
-                        }
-                    });
-                    dialog.show();
+                    Button one = (Button) dialog.getWindow().findViewById(R.id.btn_1);
+                    Button two = (Button) dialog.getWindow().findViewById(R.id.btn_2);
+
+
+                    if (store_type == 1 || store_type == 2) {
+
+                        one.setText("order");
+                        two.setText("directions");
+
+                        one.setOnClickListener(new View.OnClickListener() {
+                            @SuppressLint("WrongConstant")
+                            @Override
+                            public void onClick(View v) {
+                                popUpEditText();
+                            }
+                        });
+                        two.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Intent i = new Intent(android.content.Intent.ACTION_VIEW,
+                                        Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + (Latitudes[index]) + "," + (Longitudes[index])));
+                                i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                                startActivity(i);
+                            }
+                        });
+                    }else if (store_type == 4){
+
+                        one.setText("Yes");
+                        two.setText("No");
+
+                        //TextView textcontent = (TextView)findViewById(R.id.txt_dia);
+                        //Log.d("txt",textcontent.getText().toString());
+                        
+                        one.setOnClickListener(new View.OnClickListener() {
+                            @SuppressLint("WrongConstant")
+                            @Override
+                            public void onClick(View v) {
+                                //add lcc as corona patient
+                                Toast.makeText(getApplicationContext(), "Response Submitted!", 200).show();
+                            }
+                        });
+
+                        two.setOnClickListener(new View.OnClickListener() {
+                            @SuppressLint("WrongConstant")
+                            @Override
+                            public void onClick(View v) {
+                                //add lcc as normal patient
+                                Toast.makeText(getApplicationContext(), "Response Submitted!", 200).show();
+                            }
+                        });
+                    }
+                        dialog.show();
+
                 }else{
                     Intent i = new Intent(android.content.Intent.ACTION_VIEW,
                             Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + (Latitudes[index]) + "," + (Longitudes[index])));
@@ -204,7 +240,7 @@ public class PlaceListActivity extends AppCompatActivity {
                             case 1:     nearbyPlace = "pharmacy|drugstore";    break;
                             case 2:     nearbyPlace = "grocery_or_supermarket";     break;
                             case 3:     nearbyPlace = "atm";   break;
-                            case 4:     nearbyPlace = "department_store";   break;
+                            case 4:     nearbyPlace = "hospital";   break;
                             default:    Log.d("errtag", "Unexpected entry! check DashboardCitizenActivity");
                         }
 
@@ -279,7 +315,7 @@ public class PlaceListActivity extends AppCompatActivity {
                     case 1:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=pharmacy|drugstore"); break;
                     case 2:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=grocery_or_supermarket|store");  break;
                     case 3:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=atm");  break;
-                    case 4:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=department_store");
+                    case 4:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=hospital");
                     default:    Log.d("errtag", "Unexpected entry! check DashboardCitizenActivity");
                 }
 
@@ -339,7 +375,7 @@ public class PlaceListActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
 
                 // do something here on OK
-                Toast.makeText(getApplicationContext(), "Enter your order", 200).show();
+                Toast.makeText(getApplicationContext(), "Order Submitted, Wait for approval", 200).show();
                 String myorder = input.getText().toString();
                 Log.d("myorder",myorder);
             }

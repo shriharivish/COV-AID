@@ -25,25 +25,24 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/btn_order"
+            android:id="@+id/btn_1"
             android:layout_width="100dp"
             android:layout_height="30dp"
             android:background="@android:color/white"
             android:clickable="true"
-            android:text="Order"
             android:textColor="#5DBCD2"
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btn_directions"
+            android:id="@+id/btn_2"
             android:layout_width="100dp"
             android:layout_height="30dp"
             android:layout_marginLeft="5dp"
             android:background="@android:color/white"
             android:clickable="true"
-            android:text="Directions"
             android:textColor="#5DBCD2"
             android:textStyle="bold" />
+
     </LinearLayout>
 
 </LinearLayout>
