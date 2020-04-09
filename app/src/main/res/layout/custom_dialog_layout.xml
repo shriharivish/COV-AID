@@ -27,7 +27,7 @@
         <Button
             android:id="@+id/btn_1"
             android:layout_width="100dp"
-            android:layout_height="30dp"
+            android:layout_height="match_parent"
             android:background="@android:color/white"
             android:clickable="true"
             android:textColor="#5DBCD2"
@@ -36,7 +36,7 @@
         <Button
             android:id="@+id/btn_2"
             android:layout_width="100dp"
-            android:layout_height="30dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:background="@android:color/white"
             android:clickable="true"

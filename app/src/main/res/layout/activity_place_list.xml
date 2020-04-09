@@ -6,14 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".PlaceListActivity">
 
+    <EditText
+        android:id="@+id/et_searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search Here"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.007" />
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical|center_horizontal"
+        tools:ignore="MissingConstraints" />
+
     <ListView
         android:id="@+id/lv_places_list"
         android:layout_width="431dp"
         android:layout_height="495dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="4dp"
+        android:background="#FF8C00"
         android:listSelector="@drawable/listview_colours"
-        android:background="#FF8C00" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_searchBar" />
 
     <Button
         android:id="@+id/btn_mapsActivityLauncher"

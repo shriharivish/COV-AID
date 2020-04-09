@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +31,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -64,6 +68,9 @@ public class PlaceListActivity extends AppCompatActivity {
     private ListView places_list;
     // button to view all the nearby essential places
     private Button mapsAcitivity;
+    final ArrayList<String> list = new ArrayList<String>();
+    private EditText searchBar;
+
     // Latitudes and Longitudes of all the essential places
     double[] Latitudes;
     double[] Longitudes;
@@ -75,6 +82,16 @@ public class PlaceListActivity extends AppCompatActivity {
 
     private SeekBar sb_distance;
     private TextView tv_distance;
+    private ProgressBar spinner;
+
+    private ArrayAdapter adapter;
+    private static final double MIN_LAT = Math.toRadians(-90d);
+    private static final double MAX_LAT = Math.toRadians(90d);
+    private static final double MIN_LON = Math.toRadians(-180d);
+    private static final double MAX_LON = Math.toRadians(180d);
+
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -84,17 +101,39 @@ public class PlaceListActivity extends AppCompatActivity {
 
         //Initialization of Elements in layout file
         places_list = findViewById(R.id.lv_places_list);
-        final ListView listview = (ListView) findViewById(R.id.lv_places_list);
+        final ListView listview = findViewById(R.id.lv_places_list);
         mapsAcitivity = findViewById(R.id.btn_mapsActivityLauncher);
         sb_distance = findViewById(R.id.sb_distance);
         tv_distance = findViewById(R.id.tv_distance);
+        searchBar = findViewById(R.id.et_searchBar);
+        spinner = (ProgressBar)findViewById(R.id.progressBar1);
 
-        sb_distance.setMin(3);
+        sb_distance.setMin(1);
 
         tv_distance.setText("Proximity Radius: " + sb_distance.getMin() * 0.5 + " km.");
 
+        spinner.setVisibility(View.VISIBLE);
         setupList(listview);
         setupSeekBar(listview, sb_distance, tv_distance);
+
+
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d("CHECK", "ENTERS ON TEXT CHANGES");
+                (PlaceListActivity.this).adapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
 
@@ -118,19 +157,21 @@ public class PlaceListActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 count = 1;
                 PROXIMITY_RADIUS = progressValue[0] * 500;
+                //clear the list again and call setuplist
+                list.clear();
                 setupList(listview);
             }
         });
     }
 
+    @SuppressLint("WrongConstant")
     private void setupList(final ListView listview) {
-        final ArrayList<String> list = new ArrayList<String>();
 
         //specify the type of service
         Bundle extras = getIntent().getExtras();
         final int store_type = extras.getInt("number");
 
-        final ArrayAdapter adapter = new ArrayAdapter(this,
+        adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, list);
         listview.setAdapter(adapter);
 
@@ -144,7 +185,7 @@ public class PlaceListActivity extends AppCompatActivity {
                 //add pop up with two buttons
                 if(store_type == 1 || store_type == 2 || store_type == 4) {
 
-                    Dialog dialog = new Dialog(PlaceListActivity.this);
+                    final Dialog dialog = new Dialog(PlaceListActivity.this);
                     dialog.setContentView(R.layout.custom_dialog_layout);
 
                     Button one = (Button) dialog.getWindow().findViewById(R.id.btn_1);
@@ -161,6 +202,7 @@ public class PlaceListActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 popUpEditText();
+                                dialog.cancel();
                             }
                         });
                         two.setOnClickListener(new View.OnClickListener() {
@@ -171,6 +213,7 @@ public class PlaceListActivity extends AppCompatActivity {
                                         Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + (Latitudes[index]) + "," + (Longitudes[index])));
                                 i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                                 startActivity(i);
+                                dialog.cancel();
                             }
                         });
                     }else if (store_type == 4){
@@ -258,7 +301,7 @@ public class PlaceListActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-
+                    Log.d("listlog","val:"+list.size());
                     db = FirebaseFirestore.getInstance();
 
                     Latitudes = new double[placesCount];
@@ -302,10 +345,27 @@ public class PlaceListActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
+                    //append the registered stores in the proximity radius to the list
+                    CollectionReference addref = db.collection("store");
+                    Log.d("t","value:"+addref.get());
+                    //get the minimum and maximum latitudes and longitudes
+                    LatLng[] latLng1 = boundingCoordinates(PROXIMITY_RADIUS);
+                    Log.d("mmtag","val:"+latLng1[0]);
+
+                    Query addquery =  addref.whereGreaterThanOrEqualTo("latitude",latLng1[0].latitude);
+                    addquery =   addref.whereGreaterThanOrEqualTo("longitude",latLng1[0].longitude);
+                    addquery =   addref.whereLessThanOrEqualTo("latitude",latLng1[1].latitude);
+                    addquery =   addref.whereLessThanOrEqualTo("longitude",latLng1[1].longitude);
                 }
 
             }
         });
+        if(list.size()==0){
+            Toast.makeText(getApplicationContext(), "There are no registered stores in this area:(", 1000).show();
+
+        }
+
+        spinner.setVisibility(View.GONE);
 
         mapsAcitivity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -389,6 +449,57 @@ public class PlaceListActivity extends AppCompatActivity {
         builder.show();
 
     }
+
+    public LatLng[] boundingCoordinates(double distance) {
+        double radLat = Math.toRadians(Latitude);
+        double radLon = Math.toRadians(Longitude);
+        double radius = 6371*1000.0;
+        if (radius < 0d || distance < 0d)
+            throw new IllegalArgumentException();
+
+        // angular distance in radians on a great circle
+        double radDist = distance / radius;
+        Log.d("mmtagrad","val:"+radDist);
+        double minLat = radLat - radDist;
+        double maxLat = radLat + radDist;
+        Log.d("mmtagmm","valm:"+minLat+" "+maxLat);
+
+        double minLon, maxLon;
+        if (minLat > MIN_LAT && maxLat < MAX_LAT) {
+            double deltaLon = Math.asin(Math.sin(radDist) /
+                    Math.cos(radLat));
+            minLon = radLon - deltaLon;
+            if (minLon < MIN_LON) minLon += 2d * Math.PI;
+            maxLon = radLon + deltaLon;
+            if (maxLon > MAX_LON) maxLon -= 2d * Math.PI;
+        } else {
+            // a pole is within the distance
+            minLat = Math.max(minLat, MIN_LAT);
+            maxLat = Math.min(maxLat, MAX_LAT);
+            minLon = MIN_LON;
+            maxLon = MAX_LON;
+        }
+
+        return new LatLng[]{ fromRadians(minLat, minLon), fromRadians(maxLat, maxLon) };
+
+    }
+
+    private void checkBounds(double radLat, double radLon) {
+        if (radLat < MIN_LAT || radLat > MAX_LAT ||
+                radLon < MIN_LON || radLon > MAX_LON)
+            throw new IllegalArgumentException();
+    }
+
+    public LatLng fromRadians(double radLat, double radLon) {
+
+       checkBounds(radLat, radLon);
+       radLat = Math.toDegrees(radLat);
+       radLon = Math.toDegrees(radLon);
+       Log.d("mmtag1","val:"+radLat+" "+radLon);
+       return new LatLng(radLat, radLon);
+    }
+
+
 
 }
 
