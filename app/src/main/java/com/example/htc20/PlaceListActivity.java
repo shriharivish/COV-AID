@@ -65,13 +65,14 @@ public class PlaceListActivity extends AppCompatActivity {
     //radius for searching the nearby essential places
     private int PROXIMITY_RADIUS = 1500;
     // list of hospitals to be displayed
-    private ListView places_list;
     // button to view all the nearby essential places
     private Button mapsAcitivity;
     ArrayList<String> list = new ArrayList<String>();
     private EditText searchBar;
 
     // Latitudes and Longitudes of all the essential places
+    ArrayList<NearbyPlaces> nearbyList;
+    NearbyPlaces temp_loc;
     HashMap<String, Point> mapCoordinates = new HashMap<>();
 
     //global variables as location will be used outside the local blocks
@@ -90,13 +91,7 @@ public class PlaceListActivity extends AppCompatActivity {
     private static final double MIN_LON = Math.toRadians(-180d);
     private static final double MAX_LON = Math.toRadians(180d);
     ArrayList<ArrayList<String>> RegStores = new ArrayList<ArrayList<String>>();
-
-
-
-
-
-
-
+  
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +99,6 @@ public class PlaceListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_place_list);
 
         //Initialization of Elements in layout file
-        places_list = findViewById(R.id.lv_places_list);
         final ListView listview = findViewById(R.id.lv_places_list);
         mapsAcitivity = findViewById(R.id.btn_mapsActivityLauncher);
         sb_distance = findViewById(R.id.sb_distance);
@@ -178,26 +172,21 @@ public class PlaceListActivity extends AppCompatActivity {
         adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, list);
         listview.setAdapter(adapter);
-
         listview.setClickable(true);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final String n = listview.getItemAtPosition(position).toString();
                 final int index = n.indexOf('\t');
-                final String name = n.substring(0, index);
                 //add pop up with two buttons
                 if(store_type == 1 || store_type == 2 || store_type == 4) {
 
                     final Dialog dialog = new Dialog(PlaceListActivity.this);
                     dialog.setContentView(R.layout.custom_dialog_layout);
-
                     Button one = (Button) dialog.getWindow().findViewById(R.id.btn_1);
                     Button two = (Button) dialog.getWindow().findViewById(R.id.btn_2);
 
-
                     if (store_type == 1 || store_type == 2) {
-
                         one.setText("order");
                         two.setText("directions");
 
@@ -205,29 +194,33 @@ public class PlaceListActivity extends AppCompatActivity {
                             @SuppressLint("WrongConstant")
                             @Override
                             public void onClick(View v) {
-
-                                dialog.cancel();
+                                if(nearbyList.get(index).in_database == true) {
+                                    Intent i = new Intent(PlaceListActivity.this, CitizenPurchaseActivity.class);
+                                    i.putExtra("store_info", nearbyList.get(index).toString());
+                                    startActivity(i);
+                                    dialog.cancel();
+                                }
+                                else{
+                                    serviceUnavailableNotification();
+                                }
                             }
                         });
+
                         two.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-
                                 Intent i = new Intent(android.content.Intent.ACTION_VIEW,
-                                        Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + (mapCoordinates.get(name).lattitude) + "," + (mapCoordinates.get(name).longitude)));
+                                        Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + nearbyList.get(index).getLatitude() + "," + nearbyList.get(index).getLongitude()));
                                 i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                                 startActivity(i);
                                 dialog.cancel();
                             }
                         });
-                    }else if (store_type == 4){
+                    }
+                    else if (store_type == 4){
 
                         one.setText("Yes");
                         two.setText("No");
-
-                        //TextView textcontent = (TextView)findViewById(R.id.txt_dia);
-                        //Log.d("txt",textcontent.getText().toString());
-                        
                         one.setOnClickListener(new View.OnClickListener() {
                             @SuppressLint("WrongConstant")
                             @Override
@@ -248,22 +241,19 @@ public class PlaceListActivity extends AppCompatActivity {
                             }
                         });
                     }
-                        dialog.show();
+                    dialog.show();
 
-                }else{
+                }
+                else{
                     Intent i = new Intent(android.content.Intent.ACTION_VIEW,
-                            Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + (Objects.requireNonNull(mapCoordinates.get(name)).lattitude) + "," + (Objects.requireNonNull(mapCoordinates.get(name)).longitude)));
+                            Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + L ongitude + "&daddr=" + nearbyList.get(index).getLatitude() + "," + nearbyList.get(index).getLongitude()));
                     i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                     startActivity(i);
                 }
-
             }
         });
 
-
-
         client = LocationServices.getFusedLocationProviderClient(this);
-
         client.getLastLocation().addOnSuccessListener(PlaceListActivity.this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
@@ -273,107 +263,83 @@ public class PlaceListActivity extends AppCompatActivity {
                     Longitude = location.getLongitude();
 
                     //the code to retrieve nearby places will be written below
-
-
-                    String nearbyPlace = "";
-                    //String will contain the json output
+                    String location_type = "";
 
                     JSONArray jsonArray = null;
                     JSONObject jsonObject;
-                    String PlaceLat = "";
-                    String PlaceLong = "";
-                    String PlaceName = "";
                     int placesCount = 0;
-
-
                     switch (store_type) {
-                        case 1:
-                            nearbyPlace = "pharmacy|drugstore";
-                            break;
-                        case 2:
-                            nearbyPlace = "grocery_or_supermarket";
-                            break;
-                        case 3:
-                            nearbyPlace = "atm";
-                            break;
-                        case 4:
-                            nearbyPlace = "hospital";
-                            break;
-                        default:
-                            Log.d("errtag", "Unexpected entry! check DashboardCitizenActivity");
+                        case 1:     location_type = "pharmacy|drugstore";    break;
+                        case 2:     location_type = "grocery_or_supermarket";     break;
+                        case 3:     location_type = "atm";   break;
+                        case 4:     location_type = "hospital";   break;
+                        default:    Log.d("errtag", "Unexpected entry! check DashboardCitizenActivity");
                     }
-
-                    try {
-                        jsonArray = getAllresults(Latitude, Longitude, nearbyPlace);
+                    try{
+                        jsonArray = getAllresults(Latitude, Longitude, location_type);
                         placesCount = jsonArray.length();
-
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
+                    }
+                    catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    Log.d("listlog", "val:" + list.size());
+                    nearbyList = new ArrayList<NearbyPlaces>(placesCount);
                     db = FirebaseFirestore.getInstance();
-
-
-                    Log.d("Loctag", "value: " + placesCount);
 
                     for (int i = 0; i < placesCount; i++) {
                         try {
-
                             jsonObject = (JSONObject) jsonArray.get(i);
-                            PlaceName = jsonObject.getString("name");
-                            PlaceLat = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lat");
-                            PlaceLong = jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lng");
-                            Log.d("Latitudes", "valueLat :" + PlaceLat);
-                            Log.d("Longitudes", "valueLong : " + PlaceLong);
-
-                            Point coordinate = new Point(0, 0);
-                            coordinate.lattitude = Double.parseDouble(PlaceLat);
-                            coordinate.longitude = Double.parseDouble(PlaceLong);
+                            Point coordinate = new Point(Double.parseDouble(jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lat")), Double.parseDouble(jsonObject.getJSONObject("geometry").getJSONObject("location").getString("lng")));
+                            temp_loc = new NearbyPlaces(jsonObject.getString("name"),coordinate);
+                            nearbyList.add(temp_loc);
                             mapCoordinates.put(PlaceName, coordinate);
-                            CollectionReference ref = db.collection("store");
-                            Query query = ref.whereEqualTo("latitude", coordinate.lattitude).whereEqualTo("longitude", coordinate.longitude);
-                            queryfunLcc(query, PlaceName, count);
-                            count++;
 
-                            //parsing to be done
+                            CollectionReference ref = db.collection("store");
+                            Query query = ref.whereEqualTo("latitude", temp_loc.getLatitude()).whereEqualTo("longitude", temp_loc.getLongitude());
+                            queryfunLcc(query, temp_loc.getPlaceName, count);
+                           
+                            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    int lcc;
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            lcc = Integer.parseInt((String) document.getData().get("lcc"));
+                                            String doc_id = document.getId();
+                                            temp_loc.setShop_unique_id(doc_id);
+                                            updateLCC(lcc, temp_loc.getPlaceName, doc_id);
+                                        }
+                                    }
+                                }
+                            });
+                            count++;
+                          
                         } catch (JSONException e) {
                             Log.d("Places", "Error in Adding places");
                             e.printStackTrace();
                         }
                     }
-
                     //append the registered stores in the proximity radius to the list
                     CollectionReference addref = db.collection("store");
-
+                  
                     //get the minimum and maximum latitudes and longitudes
                     LatLng[] latLng1 = boundingCoordinates(PROXIMITY_RADIUS);
                     Log.d("mmtag", "val:" + latLng1[0]);
 
                    Query addquery = addref.whereGreaterThanOrEqualTo("latitude", latLng1[0].latitude).
                             whereLessThanOrEqualTo("latitude",latLng1[1].latitude);
-
                    Query addquery1 = addref.whereGreaterThanOrEqualTo("longitude", latLng1[0].longitude).
                             whereLessThanOrEqualTo("longitude",latLng1[1].longitude);
 
                    queryfunArraylist(addquery, addquery1);
-
                 }
             }
         });
         if(list.size()==0){
             Toast.makeText(getApplicationContext(), "There are no registered stores in this area:(", 1000).show();
-
         }
 
         spinner.setVisibility(View.GONE);
-
         mapsAcitivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -385,7 +351,6 @@ public class PlaceListActivity extends AppCompatActivity {
                     case 4:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=hospital");
                     default:    Log.d("errtag", "Unexpected entry! check DashboardCitizenActivity");
                 }
-
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 if (mapIntent.resolveActivity(getPackageManager()) != null) {
@@ -394,30 +359,9 @@ public class PlaceListActivity extends AppCompatActivity {
             }
         });
     }
-
-    synchronized private void queryfunLcc(Query query, final String PlaceName, final Integer count){
-
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    Integer lcc = 0;
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        //string containing the nearby stores
-                        lcc = (Integer) document.getData().get("lcc");
-                    }
-                    updateLCC(lcc, PlaceName, count );
-                }
-            }
-        });
-    }
-
+  
     private void queryfunArraylist(Query addquery, Query addquery1) {
-
-        final List str = new ArrayList<String>();
-
         addquery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 ArrayList<String> strr = new ArrayList<>();
@@ -426,14 +370,14 @@ public class PlaceListActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         //string containing the nearby stores
                         lcc = (Integer)document.get("lcc");
-                        Log.d("LCC","val:"+document.contains("lcc"));
-                        strr.add(document.getData().get("shop_name").toString()+"\t\t:"+lcc);
-
+                        Double lati = Double.parseDouble(document.getData().get("latitude").toString());
+                        Double long = Double.parseDouble(document.getData().get("longitude").toString());
+                        String unique_id = document.getId();
+                        strr.add(document.getData().get("shop_name").toString()+"\t\t:"+lcc+"|"+lati+"|"+long+"|"+unique_id);
                     }
                     updatelist(strr);
                 }
             }
-
         });
         addquery1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
@@ -445,17 +389,18 @@ public class PlaceListActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         //string containing the nearby stores
                         lcc = (Integer) document.getData().get("lcc");
-                        strr.add(document.getData().get("shop_name").toString()+"\t\t:"+lcc);
-
+                        String lati = document.getData().get("latitude").toString();
+                        String long = document.getData().get("longitude").toString();
+                        String unique_id = document.getId();
+                        strr.add(document.getData().get("shop_name").toString()+"\t\t:"+lcc+"|"+lati+"|"+long+"|"+unique_id);
                     }
                     updatelist(strr);
                 }
             }
-
         });
-
     }
-    synchronized private void updateLCC(Integer lcc, String PlaceName, Integer count){
+  
+    private void updateLCC(Integer lcc, String PlaceName){
         list.add(PlaceName + "\t\t: " + String.valueOf(lcc));
         adapter.notifyDataSetChanged();
 
@@ -468,13 +413,26 @@ public class PlaceListActivity extends AppCompatActivity {
             RegStores.get(0).retainAll(RegStores.get(1));
             Iterator iterator = RegStores.get(0).iterator();
             while (iterator.hasNext()) {
-                list.add((String) iterator.next());
+                list.add((String) iterator.next().split("|")[0]);
                 adapter.notifyDataSetChanged();
             }
+            String[] registeredResults = RegStores.get(0);
+            for(String temp: registeredResults){
+              String[] parts = temp.split("|");
+              String lcc_shopName = parts[0];
+              String shopName = lcc_shopName.split("\t\t")[0];
+              Double lati = Double.parseDouble(parts[1]);
+              Double long = Double.parseDouble(parts[2]);
+              Point tempCoordinate = new Point(lati, long);
+              String unique_id = parts[3];
+              NearbyPlaces np = new NearbyPlaces(shopName, tempCoordinate);
+              np.setShop_unique_id(unique_id);
+              nearbyList.add(np);
+            }
             list = new ArrayList<String>(new LinkedHashSet<String>(list));
+            nearbyList = new ArrayList<NearbyPlaces>(new LinkedHashSet<NearbyPlace>(nearbyList));
             adapter.notifyDataSetChanged();
         }
-
     }
 
     private JSONArray getAllresults(double Latitude,double  Longitude, String nearbyPlace) throws UnsupportedEncodingException, ExecutionException, InterruptedException, JSONException {
@@ -486,12 +444,9 @@ public class PlaceListActivity extends AppCompatActivity {
         strUrl = getUrl(Latitude, Longitude, nearbyPlace);
         jsonOutput = new RequestJsonPlaces().execute(strUrl).get();
         jsonObject = new JSONObject((String) jsonOutput);
-        Log.d("mytag","value:"+jsonObject);
         JSONArray jsonArray1 = jsonObject.getJSONArray("results");
-        Log.d("mytag","value: "+jsonArray1.length());
-        return  jsonArray1;
+        return jsonArray1;
     }
-
 
     private String getUrl(double latitude, double longitude, String nearbyPlace) throws UnsupportedEncodingException {
 
@@ -506,10 +461,32 @@ public class PlaceListActivity extends AppCompatActivity {
         return (googlePlacesUrl.toString());
     }
 
+    private void serviceUnavailableNotification() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Service Unavailable !x!");
+
+        final TextView input = new TextView(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        input.setText("We're Sorry, but the service is not currently offered for this outlet");
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            @SuppressLint("WrongConstant")
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
 
     public LatLng[] boundingCoordinates(double distance) {
-        double radLat = Math.toRadians(Latitude);
-        double radLon = Math.toRadians(Longitude);
+        double radLat = Math.toRadians(latitude);
+        double radLon = Math.toRadians(longitude);
         double radius = 6371*1000.0;
         if (radius < 0d || distance < 0d)
             throw new IllegalArgumentException();
@@ -536,9 +513,7 @@ public class PlaceListActivity extends AppCompatActivity {
             minLon = MIN_LON;
             maxLon = MAX_LON;
         }
-
         return new LatLng[]{ fromRadians(minLat, minLon), fromRadians(maxLat, maxLon) };
-
     }
 
     private void checkBounds(double radLat, double radLon) {
@@ -555,9 +530,6 @@ public class PlaceListActivity extends AppCompatActivity {
        Log.d("mmtag1","val:"+radLat+" "+radLon);
        return new LatLng(radLat, radLon);
     }
-
-
-
 }
 
 class RequestJsonPlaces extends AsyncTask<String, String, String> {
@@ -610,9 +582,63 @@ class RequestJsonPlaces extends AsyncTask<String, String, String> {
     protected void onPostExecute (String result){
         super.onPostExecute(result);
     }
-
 }
 
+class NearbyPlaces{
+
+    private String place_name;
+    private Point coordinate;
+    public boolean in_database;
+    private String shop_unique_id;
+
+    public NearbyPlaces(String place_name, Point coordinate){
+        this.place_name = place_name;
+        this.coordinate = coordinate;
+        in_database = false;
+        shop_unique_id = null;
+    }
+
+    public Double getLatitude(){
+        return coordinate.latitude;
+    }
+
+    public Double getLongitude(){
+        return coordinate.longitude;
+    }
+
+    public String getPlaceName(){
+        return place_name;
+    }
+    public int hashCode(){
+      int hashcode = 0;
+      hashcode += place_name.hashCode();
+      hashcode += shop_unique_id.hashCode();
+      return hashcode;
+    }
+     
+    public boolean equals(Object obj){
+      if (obj instanceof NearbyPlaces) {
+        NearbyPlaces pp = (NearbyPlaces) obj;
+        if(pp.place_name.equals(this.place_name) && pp.shop_unique_id.equals(this.shop_unique_id))
+        return true;
+      } 
+      else{
+        return false;
+      }
+    }
+
+    @Override
+    public String toString(){
+        String result = String.valueOf(latitude) + "|" + String.valueOf(longitude) + "|" + place_name + "|" + String.valueOf(in_database) + "|" + shop_unique_id;
+        return result;
+    }
+
+    public void setShop_unique_id(String doc_id){
+        shop_unique_id = doc_id;
+        in_database = true;
+    }
+
+}
 
 class Point {
     double lattitude;

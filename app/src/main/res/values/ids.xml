@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="fab" type="id" />
+    <item name="etItemName8" type="id"/>
+    <item name="etItemQuantity8" type="id"/>
+    <item name="etItemName9" type="id"/>
+    <item name="etItemQuantity9" type="id"/>
+    <item name="etItemName10" type="id"/>
+    <item name="etItemQuantity10" type="id"/>
+    <item name="etItemName11" type="id"/>
+    <item name="etItemQuantity11" type="id"/>
+    <item name="etItemName12" type="id"/>
+    <item name="etItemQuantity12" type="id"/>
+    <item name="etItemName13" type="id"/>
+    <item name="etItemQuantity13" type="id"/>
+    <item name="etItemName14" type="id"/>
+    <item name="etItemQuantity14" type="id"/>
+    <item name="etItemName15" type="id"/>
+    <item name="etItemQuantity15" type="id"/>
 </resources>

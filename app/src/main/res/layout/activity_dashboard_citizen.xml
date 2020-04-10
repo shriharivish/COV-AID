@@ -7,250 +7,231 @@
     tools:context=".DashboardCitizenActivity">
 
     <RelativeLayout
-        android:layout_width="415dp"
-        android:layout_height="729dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="401dp"
+        android:layout_height="511dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:background="@drawable/wallpaper"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <RelativeLayout
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_scanQR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="16dp"
+                app:srcCompat="@android:drawable/ic_input_add" />
+
+            <ImageView
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_gravity="center"
+                android:src="@drawable/user1"
+                tools:srcCompat="@drawable/user1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="@string/citizen_dashboard"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_signout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:text="@string/sign_out" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="230dp"
-                    android:background="@drawable/wallpaper"
-                    android:gravity="center"
-                    android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="236dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="135dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="53dp"
+                            android:layout_marginBottom="15dp"
+                            android:text="@string/pharmacies"
+                            android:textSize="16sp" />
+                    </RelativeLayout>
 
                     <ImageView
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
+                        android:id="@+id/img_qrCodeEntry"
+                        android:layout_width="75dp"
+                        android:layout_height="70dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/user1"
-                        tools:srcCompat="@drawable/user1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/citizen_dashboard"
-                        android:textColor="#ffffff"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:src="@drawable/hospital" />
 
                     <Button
-                        android:id="@+id/btn_signout"
+                        android:id="@+id/btn_viewPharmacies"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/sign_out" />
+                        android:layout_height="match_parent"
+                        android:background="#0000ffff" />
 
+                </androidx.cardview.widget.CardView>
 
-                </LinearLayout>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="236dp"
-                    android:layout_marginRight="10dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="135dp"
-                        android:layout_marginBottom="10dp"
-                        android:orientation="horizontal">
+                        android:layout_height="match_parent">
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginEnd="60dp"
+                            android:layout_marginBottom="9dp"
+                            android:text="@string/groceries"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/btn_Groceries"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="5dp"
-                            android:layout_weight="1">
+                            android:background="#0000ffff" />
+                    </RelativeLayout>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/imageView1"
+                        android:layout_width="73dp"
+                        android:layout_height="69dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/grocery" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_alignParentBottom="true"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_marginEnd="53dp"
-                                    android:layout_marginBottom="15dp"
-                                    android:layout_gravity="center"
-                                    android:text="@string/pharmacies"
-                                    android:textSize="16sp" />
-                            </RelativeLayout>
+                </androidx.cardview.widget.CardView>
 
-                            <ImageView
-                                android:id="@+id/img_qrCodeEntry"
-                                android:layout_width="75dp"
-                                android:layout_height="70dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/hospital" />
+            </LinearLayout>
 
-                            <Button
-                                android:id="@+id/btn_viewPharmacies"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="#0000ffff" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="135dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
-                        </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1">
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="5dp"
-                            android:layout_weight="1">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_alignParentBottom="true"
-                                    android:layout_marginEnd="60dp"
-                                    android:layout_marginBottom="9dp"
-                                    android:text="@string/groceries"
-                                    android:textSize="16sp" />
-
-                                <Button
-                                    android:id="@+id/btn_Groceries"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:background="#0000ffff" />
-                            </RelativeLayout>
-
-                            <ImageView
-                                android:id="@+id/imageView1"
-                                android:layout_width="73dp"
-                                android:layout_height="69dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/grocery" />
-
-                        </androidx.cardview.widget.CardView>
-
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="135dp"
-                        android:layout_marginBottom="10dp"
-                        android:orientation="horizontal">
+                        android:layout_height="match_parent">
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
                             android:layout_gravity="center"
-                            android:layout_marginEnd="5dp"
-                            android:layout_weight="1">
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="53dp"
+                            android:layout_marginBottom="15dp"
+                            android:text="@string/banks"
+                            android:textSize="16sp" />
+                    </RelativeLayout>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/img_qrCodeExit"
+                        android:layout_width="73dp"
+                        android:layout_height="65dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/bank" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_alignParentBottom="true"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_marginEnd="53dp"
-                                    android:layout_marginBottom="15dp"
-                                    android:layout_gravity="center"
-                                    android:text="@string/banks"
-                                    android:textSize="16sp" />
-                            </RelativeLayout>
+                    <Button
+                        android:id="@+id/btn_viewBanks"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#0000ffff" />
 
-                            <ImageView
-                                android:id="@+id/img_qrCodeExit"
-                                android:layout_width="73dp"
-                                android:layout_height="65dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/bank" />
+                </androidx.cardview.widget.CardView>
 
-                            <Button
-                                android:id="@+id/btn_viewBanks"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="#0000ffff" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1">
 
-                        </androidx.cardview.widget.CardView>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
                             android:layout_gravity="center"
-                            android:layout_marginStart="5dp"
-                            android:layout_weight="1">
+                            android:layout_marginEnd="66dp"
+                            android:layout_marginBottom="11dp"
+                            android:text="@string/hospitals"
+                            android:textSize="16sp" />
+                    </RelativeLayout>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="91dp"
+                        android:layout_height="77dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/hospital" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_alignParentBottom="true"
-                                    android:layout_marginEnd="66dp"
-                                    android:layout_marginBottom="11dp"
-                                    android:layout_gravity="center"
-                                    android:text="@string/hospitals"
-                                    android:textSize="16sp" />
-                            </RelativeLayout>
+                    <Button
+                        android:id="@+id/btn_viewHospitals"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#0000ffff" />
 
-                            <ImageView
-                                android:id="@+id/imageView4"
-                                android:layout_width="91dp"
-                                android:layout_height="77dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/hospital" />
+                </androidx.cardview.widget.CardView>
 
-                            <Button
-                                android:id="@+id/btn_viewHospitals"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="#0000ffff" />
+            </LinearLayout>
 
-                        </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-        </ScrollView>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_scanQR"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom|end"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="@dimen/fab_margin"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="657dp"
-            app:srcCompat="@android:drawable/ic_input_add" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
