@@ -79,8 +79,9 @@ public class RegistrationActivity extends AppCompatActivity {
                     user.put("last_name", user_lastName);
                     user.put("phone_number", user_phoneNumber);
                     user.put("email", user_email);
+                    user.put("scanned", false);
                     db.collection("citizen")
-                            .document(user_email + String.valueOf(user_phoneNumber))
+                            .document(user_email)
                             .set(user)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
