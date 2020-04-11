@@ -2,6 +2,7 @@ package com.example.htc20;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -35,8 +38,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 public class StoreRegistrationActivity extends AppCompatActivity {
     private EditText userEmail, uniqueID, shopName;
@@ -47,11 +48,10 @@ public class StoreRegistrationActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private Spinner service_category;
     private FusedLocationProviderClient client;
-    private LocationRequest mLocationRequest;
+    private LocationRequest mLocationRequest = null;
     private final int REQUEST_LOCATION_PERMISSION = 1;
-    double Latitude = 0;
-    double Longitude = 0;
-
+    double Latitude;
+    double Longitude;
 
     private static final String TAG = "DocSnippets";
 
@@ -62,6 +62,30 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                 .build();
         db.setFirestoreSettings(settings);
     }
+
+    private void sSetLocationCoordinates(double latitude, double longitude){
+        this.Latitude = latitude;
+        this.Longitude = longitude;
+        Log.d("Latitude_3", "value " + Latitude);
+    }
+
+    protected void createLocationRequest() {
+        if (mLocationRequest == null) {
+            mLocationRequest = new LocationRequest();
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            mLocationRequest.setInterval(100);
+            mLocationRequest.setFastestInterval(50);
+        }
+    }
+
+    //get location
+    LocationCallback mLocationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            client.flushLocations();
+            return;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -76,22 +100,28 @@ public class StoreRegistrationActivity extends AppCompatActivity {
         shopName = findViewById(R.id.etShopName);
         service_category = findViewById(R.id.etCategories);
 
-        //get location
-        LocationCallback mLocationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                return;
-            }
-        };
         client = LocationServices.getFusedLocationProviderClient(this);
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        createLocationRequest();
+        requestLocationPermission();
         client.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+        client.getLastLocation().addOnSuccessListener(StoreRegistrationActivity.this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null){
+                    double latitude =  location.getLatitude();
+                    double longitude = location.getLongitude();
+                    Log.d("Latitude_1", "value: " + latitude);
+                    sSetLocationCoordinates(latitude, longitude);
+                }
+                else{
+                    Toast.makeText(StoreRegistrationActivity.this, "Unable to access current location of the shop. Please try again in sometime", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(StoreRegistrationActivity.this, StoreLoginActivity.class));
+                }
+            }
+        });
 
         firebaseAuth = FirebaseAuth.getInstance();
 //        setup();
-        db = FirebaseFirestore.getInstance();
-
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,38 +137,24 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                     user.put("email", email);
                     user.put("shop_name", shop_name);
                     user.put("service_category", category);
-
-                    requestLocationPermission();
-                    client.getLastLocation().addOnSuccessListener(StoreRegistrationActivity.this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            if (location != null){
-                                Latitude =  location.getLatitude();
-                                Longitude = location.getLongitude();
-                                Log.d("Latitude", "value: " + Latitude);
-                                //GeoPoint gp = new GeoPoint(Latitude , Longitude);
-                                //Log.d("gp", "val: "+gp);
-                                //user.put("shop_loc", gp);
-                            }
-                        }
-                    });
-                    int lcc = 0;
                     user.put("lcc", 0);
                     user.put("latitude", Latitude);
                     user.put("longitude", Longitude);
+                    Log.d("Latitude_4", "value: " + Latitude);
+                    db = FirebaseFirestore.getInstance();
                     db.collection("store")
                             .document(strUniqueID)
                             .set(user)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "DocumentSnapshot added");
+                                    Log.d("Latitude", "DocumentSnapshot added");
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error adding document", e);
+                                    Log.w("Latitude", "Error adding document", e);
                                 }
                             });
 
@@ -159,6 +175,7 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                 }
             }
         });
+
         userLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,21 +187,40 @@ public class StoreRegistrationActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.d("requestCode", "value : "+requestCode);
-        // Forward results to EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        Log.d("Latitude", "Reached in OnRequestPermissionsResult");
+                        client.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+                    }
+
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(this, "Permission denied :( | We need to location permission to run this app", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(StoreRegistrationActivity.this, LauncherActivity.class));
+                }
+                return;
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
-    @AfterPermissionGranted(REQUEST_LOCATION_PERMISSION)
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     public void requestLocationPermission() {
-        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
-        if(EasyPermissions.hasPermissions(this, perms)) {
+        Log.d("Latitude", "REached in permissions");
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_LOCATION);
+        } else {
             Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show();
-
-        }
-        else {
-            EasyPermissions.requestPermissions(this, "Please grant the location permission", REQUEST_LOCATION_PERMISSION, perms);
-
         }
     }
 
@@ -204,27 +240,4 @@ public class StoreRegistrationActivity extends AppCompatActivity {
         }
         return result;
     }
-
-//    private void sendEmailVerification(String email) {
-//        final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-//        final String temp_email = firebaseUser.getEmail();
-//        firebaseUser.updateEmail(email);
-//        if (firebaseUser != null) {
-//            firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-//                @Override
-//                public void onComplete(@NonNull Task<Void> task) {
-//                    if (task.isSuccessful()) {
-//                        Toast.makeText(StoreRegistrationActivity.this, "A Verification Link has been sent to you E-mail", Toast.LENGTH_LONG).show();
-//                        firebaseAuth.signOut();
-//                        finish();
-//                        if (temp_email != null) {
-//                            firebaseUser.updateEmail(temp_email);
-//                        }
-//                    } else {
-//                        Toast.makeText(StoreRegistrationActivity.this, "Please Try Again Later or check if entered email is correct", Toast.LENGTH_LONG).show();
-//                    }
-//                }
-//            });
-//        }
-//    }
 }
