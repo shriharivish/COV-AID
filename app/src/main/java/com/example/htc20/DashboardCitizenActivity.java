@@ -111,8 +111,8 @@ public class DashboardCitizenActivity extends AppCompatActivity {
     public void requestLocationPermission() {
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
         if(EasyPermissions.hasPermissions(this, perms)) {
-            Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show();
-
+//            Toast.makeText(this, "Location permission already granted", Toast.LENGTH_SHORT).show();
+                return;
         }
         else {
             EasyPermissions.requestPermissions(this, "Please grant the location permission", REQUEST_LOCATION_PERMISSION, perms);

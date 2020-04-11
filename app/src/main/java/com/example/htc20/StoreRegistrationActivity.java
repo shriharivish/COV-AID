@@ -220,7 +220,7 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_LOCATION);
         } else {
-            Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Location permission already granted", Toast.LENGTH_SHORT).show();
         }
     }
 

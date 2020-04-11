@@ -3,8 +3,11 @@ package com.example.htc20;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -49,7 +52,7 @@ public class CitizenPurchaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_citizen_purchase);
 
         Bundle extras = getIntent().getExtras();
-        String[] extraInfo = extras.getString("store_info").split("|", 6);
+        String[] extraInfo = extras.getString("store_info").split("@", -1);
         latitude = Double.parseDouble(extraInfo[0]);
         longitude = Double.parseDouble(extraInfo[1]);
         shop_name = extraInfo[2];
@@ -64,16 +67,16 @@ public class CitizenPurchaseActivity extends AppCompatActivity {
         scroll_view = (ScrollView) findViewById(R.id.etScrollView);
         vertical_layout = findViewById(R.id.etVerticalLayout);
 
+        Log.d("ShopName", shop_name);
         shop.setText(shop_name);
         progress_bar.setVisibility(View.GONE);
 
         place_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progress_bar.setVisibility(View.VISIBLE);
                 boolean result = true;
                 String order = "";
-                int count = 1;
+                int count = 0;
                 for (int i = 1; i <= number_of_orders; i++) {
                     LinearLayout layout = (LinearLayout) vertical_layout.getChildAt(i);
                     AutoCompleteTextView item_name = (AutoCompleteTextView) layout.getChildAt(0);
@@ -84,14 +87,15 @@ public class CitizenPurchaseActivity extends AppCompatActivity {
                         break;
                     }
                     else if(!item_name.getText().toString().isEmpty() && !item_quantity.getText().toString().isEmpty()){
-                        order += String.valueOf(count) + ") " + item_name.getText().toString().trim() + ":- " + item_quantity.getText().toString().trim() + "\n";
                         count++;
+                        order += count + ". " + item_name.getText().toString().trim() + " X " + item_quantity.getText().toString().trim() + "|\n";
                     }
                 }
-                if(result == true){
+                if(result == true && count >=1){
+                    progress_bar.setVisibility(View.VISIBLE);
                     db = FirebaseFirestore.getInstance();
                     final Map<String, String> user = new HashMap<>();
-                    user.put("unique    _id", shop_unique_id);
+                    user.put("unique_id", shop_unique_id);
                     user.put("shop_name", shop_name);
                     user.put("order_placed", order);
                     db.collection("orders")
@@ -102,6 +106,10 @@ public class CitizenPurchaseActivity extends AppCompatActivity {
                                     Toast.makeText(CitizenPurchaseActivity.this, "Sent Order to Store", Toast.LENGTH_SHORT).show();
                                 }
                             });
+                    startActivity(new Intent(CitizenPurchaseActivity.this, DashboardCitizenActivity.class));
+                }
+                else{
+                    Toast.makeText(CitizenPurchaseActivity.this, "Please enter the order correctly", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -116,6 +124,13 @@ public class CitizenPurchaseActivity extends AppCompatActivity {
                 else{
                     cantAddMoreOrders();
                 }
+            }
+        });
+
+        return_dashboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CitizenPurchaseActivity.this, DashboardCitizenActivity.class));
             }
         });
 
@@ -175,25 +190,31 @@ public class CitizenPurchaseActivity extends AppCompatActivity {
         layout.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                35
+                57
         );
-        lp.setMarginStart(5);
-        lp.setMarginEnd(5);
-        lp.setMargins(0, 5, 0, 0);
+        lp.setMarginStart(0);
+        lp.setMarginEnd(10);
+        lp.setMargins(0, 10, 0, 30);
         layout.setLayoutParams(lp);
 
         AutoCompleteTextView item_name = new AutoCompleteTextView(this);
         item_name.setBackground(getResources().getDrawable(R.drawable.border));
-        LinearLayout.LayoutParams item_name_params = new LinearLayout.LayoutParams(277, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams item_name_params = new LinearLayout.LayoutParams(450, LinearLayout.LayoutParams.WRAP_CONTENT);
+        item_name_params.setMarginStart(15);
         item_name_params.setMarginEnd(3);
-        item_name_params.weight = 1;
+        item_name_params.weight = 3;
+        item_name.setTextColor(Color.parseColor("#000000"));
+        item_name.setVisibility(View.VISIBLE);
         item_name.setLayoutParams(item_name_params);
 
         AutoCompleteTextView item_quantity = new AutoCompleteTextView(this);
         item_quantity.setBackground(getResources().getDrawable(R.drawable.border));
-        LinearLayout.LayoutParams item_quantity_params = new LinearLayout.LayoutParams(104, LinearLayout.LayoutParams.WRAP_CONTENT);
-        item_quantity_params.setMarginStart(3);
-        item_quantity_params.weight = 1;
+        LinearLayout.LayoutParams item_quantity_params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+        item_quantity_params.setMarginStart(2);
+        item_name_params.setMarginEnd(15);
+        item_quantity.setTextColor(Color.parseColor("#000000"));
+        item_quantity_params.weight = 3;
+        item_quantity.setVisibility(View.VISIBLE);
         item_quantity.setInputType(InputType.TYPE_CLASS_NUMBER);
         item_quantity.setLayoutParams(item_quantity_params);
 
@@ -234,11 +255,6 @@ public class CitizenPurchaseActivity extends AppCompatActivity {
         layout.addView(item_quantity);
 
         vertical_layout.addView(layout);
-        vertical_layout.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                Toast.makeText(CitizenPurchaseActivity.this, "Added a new Order to the List", Toast.LENGTH_SHORT).show();
-            }
-        });
+        Toast.makeText(CitizenPurchaseActivity.this, "Added a new Order to the List", Toast.LENGTH_SHORT).show();
     }
 }
