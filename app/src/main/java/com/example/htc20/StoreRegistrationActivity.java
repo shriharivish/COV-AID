@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -42,6 +47,7 @@ public class StoreRegistrationActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private Spinner service_category;
     private FusedLocationProviderClient client;
+    private LocationRequest mLocationRequest;
     private final int REQUEST_LOCATION_PERMISSION = 1;
     double Latitude = 0;
     double Longitude = 0;
@@ -69,13 +75,18 @@ public class StoreRegistrationActivity extends AppCompatActivity {
         uniqueID = findViewById(R.id.etUniqueID);
         shopName = findViewById(R.id.etShopName);
         service_category = findViewById(R.id.etCategories);
-        // map = (MapActivity)......................
-
-        //final GeoPoint gp = new GeoPoint((int)(Latitude * 1E6), (int)(Longitude * 1E6));
 
         //get location
+        LocationCallback mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                return;
+            }
+        };
         client = LocationServices.getFusedLocationProviderClient(this);
-
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        client.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
 
         firebaseAuth = FirebaseAuth.getInstance();
 //        setup();
@@ -96,9 +107,8 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                     user.put("email", email);
                     user.put("shop_name", shop_name);
                     user.put("service_category", category);
-                    
-                    requestLocationPermission();
 
+                    requestLocationPermission();
                     client.getLastLocation().addOnSuccessListener(StoreRegistrationActivity.this, new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
