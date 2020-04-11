@@ -13,10 +13,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
@@ -39,6 +43,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SecondActivity extends AppCompatActivity {
 
@@ -49,6 +54,8 @@ public class SecondActivity extends AppCompatActivity {
     FirebaseVisionBarcodeDetectorOptions options;
     FirebaseVisionBarcodeDetector detector;
     private FirebaseFirestore db;
+    int flag = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +82,7 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     private void setupCamera() {
-        btn_start_again = (Button) findViewById(R.id.btn_again);
+        btn_start_again = findViewById(R.id.btn_again);
         btn_start_again.setEnabled(isDetected);
         btn_start_again.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +92,7 @@ public class SecondActivity extends AppCompatActivity {
             }
         });
 
-        cameraView = (CameraView) findViewById(R.id.cameraView);
+        cameraView = findViewById(R.id.cameraView);
         cameraView.setLifecycleOwner(this);
         cameraView.addFrameProcessor(new FrameProcessor() {
             @Override
@@ -140,12 +147,97 @@ public class SecondActivity extends AppCompatActivity {
                 switch (value_tpe) {
                     case FirebaseVisionBarcode.TYPE_TEXT: {
                         String text = item.getRawValue();
+                        int index = text.indexOf('#');
+                        final String id = text.substring(0, index);
+                        final String email = fbase.getCurrentUser().getEmail();
                         if (isSubstring("entry", text) != -1) {
-                            createDialog("Entry has been recorded!");
-                            startActivity(new Intent(SecondActivity.this, DashboardCitizenActivity.class));
 
+                            db.collection("citizen").document(email)
+                                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    boolean val;
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot documentSnapshot = task.getResult();
+                                        val = (Boolean) documentSnapshot.get("scanned");
+                                        if (!val) {
+                                            db.collection("store")
+                                                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        for (DocumentSnapshot documentSnapshot : Objects.requireNonNull(task.getResult())) {
+                                                            if (documentSnapshot.getId().equalsIgnoreCase(id)) {
+                                                                long lcc = (Long) documentSnapshot.get("lcc");
+
+
+                                                                lcc++;
+                                                                Toast.makeText(SecondActivity.this, "Entry has been recorded!", Toast.LENGTH_SHORT).show();
+                                                                flag = 1;
+
+                                                                db.collection("store").document(id).update("lcc", lcc);
+                                                                db.collection("citizen").document(email).update("scanned", true);
+
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        } else {
+
+
+                                            Toast.makeText(SecondActivity.this, "Your entry is already recorded", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }
+                                }
+                            });
+
+                            finish();
+                            startActivity(new Intent(SecondActivity.this, DashboardCitizenActivity.class));
                         } else if (isSubstring("exit", text) != -1) {
-                            createDialog("Exit has been recorded!");
+                            db.collection("citizen").document(email)
+                                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    boolean val;
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot documentSnapshot = task.getResult();
+                                        val = (Boolean) documentSnapshot.get("scanned");
+                                        if (val) {
+                                            db.collection("store")
+                                                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        for (DocumentSnapshot documentSnapshot : Objects.requireNonNull(task.getResult())) {
+                                                            if (documentSnapshot.getId().equalsIgnoreCase(id)) {
+                                                                long lcc = (Long) documentSnapshot.get("lcc");
+
+
+                                                                lcc--;
+                                                                Toast.makeText(SecondActivity.this, "Entry has been recorded!", Toast.LENGTH_SHORT).show();
+                                                                flag = 1;
+
+                                                                db.collection("store").document(id).update("lcc", lcc);
+                                                                db.collection("citizen").document(email).update("scanned", false);
+
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        } else {
+
+                                            Toast.makeText(SecondActivity.this, "Record your entry first", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }
+                                }
+                            });
+
+
+                            finish();
                             startActivity(new Intent(SecondActivity.this, DashboardCitizenActivity.class));
                         } else {
                             createDialog("Code is not recognized!");
@@ -155,28 +247,10 @@ public class SecondActivity extends AppCompatActivity {
                     }
                     break;
 
-                    case FirebaseVisionBarcode.TYPE_URL: {
-                        //Start Browser Intent
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getRawValue()));
-                        startActivity(intent);
-                    }
-                    break;
 
-                    case FirebaseVisionBarcode.TYPE_CONTACT_INFO: {
-                        String info = new StringBuilder("Name: ")
-                                .append(item.getContactInfo().getName().getFormattedName())
-                                .append("\n")
-                                .append("Address")
-                                .append(item.getContactInfo().getAddresses().get(0).getAddressLines())
-                                .append("\nEmail")
-                                .append(item.getContactInfo().getEmails().get(0).getAddress())
-                                .toString();
-                        createDialog(info);
-                    }
-
-                    break;
 
                     default:
+                        createDialog("Code is not recognized !");
                         break;
                 }
             }
