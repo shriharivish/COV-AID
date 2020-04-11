@@ -196,6 +196,7 @@ public class PlaceListActivity extends AppCompatActivity {
                     dialog.setContentView(R.layout.custom_dialog_layout);
                     Button one = (Button) dialog.getWindow().findViewById(R.id.btn_1);
                     Button two = (Button) dialog.getWindow().findViewById(R.id.btn_2);
+                    TextView text_view = (TextView) dialog.getWindow().findViewById(R.id.etTextDialog);
                     if (store_type == 1 || store_type == 2) {
                         one.setText("order");
                         two.setText("directions");
@@ -227,7 +228,7 @@ public class PlaceListActivity extends AppCompatActivity {
                         });
                     }
                     else if (store_type == 4){
-
+                        text_view.setText("Are you a CORONO infected patient");
                         one.setText("Yes");
                         two.setText("No");
                         one.setOnClickListener(new View.OnClickListener() {

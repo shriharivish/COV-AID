@@ -78,5 +78,6 @@
     <string name="item_name">Item Name</string>
     <string name="item_quantity">Item Quantity</string>
     <string name="add_another_order">Add New Order</string>
+    <string name="do_you_want_to_order_or_get_directions">Do you want to order or get directions?</string>
 </resources>
 
