@@ -43,6 +43,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SecondActivity extends AppCompatActivity {
 
@@ -153,7 +154,7 @@ public class SecondActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful()) {
-                                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                                        for (DocumentSnapshot documentSnapshot : Objects.requireNonNull(task.getResult())) {
                                             if (documentSnapshot.getId().equalsIgnoreCase(id)) {
                                                 long lcc = (Long) documentSnapshot.get("lcc");
                                                 lcc++;
@@ -168,6 +169,22 @@ public class SecondActivity extends AppCompatActivity {
                             startActivity(new Intent(SecondActivity.this, DashboardCitizenActivity.class));
 
                         } else if (isSubstring("exit", text) != -1) {
+                            db.collection("store")
+                                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (DocumentSnapshot documentSnapshot : Objects.requireNonNull(task.getResult())) {
+                                            if (documentSnapshot.getId().equalsIgnoreCase(id)) {
+                                                long lcc = (Long) documentSnapshot.get("lcc");
+                                                lcc--;
+                                                db.collection("store").document(id).update("lcc", lcc);
+
+                                            }
+                                        }
+                                    }
+                                }
+                            });
                             createDialog("Exit has been recorded!");
                             startActivity(new Intent(SecondActivity.this, DashboardCitizenActivity.class));
                         } else {
