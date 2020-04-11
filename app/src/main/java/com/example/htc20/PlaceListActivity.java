@@ -365,7 +365,7 @@ public class PlaceListActivity extends AppCompatActivity {
                             Integer service_category_no = 0;
                             switch(service_category){
                                 case "Pharmacy": service_category_no = 1; break;
-                                case "Grocery" : service_category_no = 2;   break;
+                                case "Grocery Shop" : service_category_no = 2;   break;
                                 case "Bank"   : service_category_no = 3;    break;
                                 case "Hospital" : service_category_no = 4; break;
                                 default:
@@ -413,7 +413,7 @@ public class PlaceListActivity extends AppCompatActivity {
                                 case "Pharmacy":
                                     service_category_no = 1;
                                     break;
-                                case "Grocery":
+                                case "Grocery Shop":
                                     service_category_no = 2;
                                     break;
                                 case "Bank":
