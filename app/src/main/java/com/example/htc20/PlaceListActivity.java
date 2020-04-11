@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -30,6 +31,9 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -163,6 +167,10 @@ public class PlaceListActivity extends AppCompatActivity {
             }
         });
     }
+    private void setLocationCoordinates(double latitude, double longitude){
+        Latitude = latitude;
+        Longitude = longitude;
+    }
 
     @SuppressLint("WrongConstant")
     private void setupList(final ListView listview) {
@@ -254,14 +262,26 @@ public class PlaceListActivity extends AppCompatActivity {
             }
         });
 
+        LocationCallback mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                return;
+            }
+        };
+
+        client = LocationServices.getFusedLocationProviderClient(this);
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        client.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
         client = LocationServices.getFusedLocationProviderClient(this);
         client.getLastLocation().addOnSuccessListener(PlaceListActivity.this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
                     FirebaseFirestore db;
-                    Latitude = location.getLatitude();
-                    Longitude = location.getLongitude();
+                    double latitude =  location.getLatitude();
+                    double longitude = location.getLongitude();
+                    setLocationCoordinates(latitude, longitude);
 
                     //the code to retrieve nearby places will be written below
                     String location_type = "";
