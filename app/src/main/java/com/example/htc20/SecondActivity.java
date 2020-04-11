@@ -13,10 +13,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
@@ -49,6 +53,7 @@ public class SecondActivity extends AppCompatActivity {
     FirebaseVisionBarcodeDetectorOptions options;
     FirebaseVisionBarcodeDetector detector;
     private FirebaseFirestore db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +145,25 @@ public class SecondActivity extends AppCompatActivity {
                 switch (value_tpe) {
                     case FirebaseVisionBarcode.TYPE_TEXT: {
                         String text = item.getRawValue();
+                        int index = text.indexOf('#');
+                        final String id = text.substring(0, index);
                         if (isSubstring("entry", text) != -1) {
+                            db.collection("store")
+                                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                                            if (documentSnapshot.getId().equalsIgnoreCase(id)) {
+                                                long lcc = (Long) documentSnapshot.get("lcc");
+                                                lcc++;
+                                                db.collection("store").document(id).update("lcc", lcc);
+
+                                            }
+                                        }
+                                    }
+                                }
+                            });
                             createDialog("Entry has been recorded!");
                             startActivity(new Intent(SecondActivity.this, DashboardCitizenActivity.class));
 
