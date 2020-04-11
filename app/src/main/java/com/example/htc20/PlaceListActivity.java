@@ -92,6 +92,7 @@ public class PlaceListActivity extends AppCompatActivity {
     private static final double MIN_LON = Math.toRadians(-180d);
     private static final double MAX_LON = Math.toRadians(180d);
     ArrayList<ArrayList<String>> RegStores = new ArrayList<ArrayList<String>>();
+    int store_type = 0;
   
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -168,7 +169,7 @@ public class PlaceListActivity extends AppCompatActivity {
 
         //specify the type of service
         Bundle extras = getIntent().getExtras();
-        final int store_type = extras.getInt("number");
+        store_type = extras.getInt("number");
 
         adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, list);
@@ -310,9 +311,12 @@ public class PlaceListActivity extends AppCompatActivity {
 
                    Query addquery = addref.whereGreaterThanOrEqualTo("latitude", latLng1[0].latitude).
                             whereLessThanOrEqualTo("latitude",latLng1[1].latitude);
+
                    Query addquery1 = addref.whereGreaterThanOrEqualTo("longitude", latLng1[0].longitude).
                             whereLessThanOrEqualTo("longitude",latLng1[1].longitude);
+
                    queryfunArraylist(addquery, addquery1);
+
                 }
             }
         });
@@ -349,26 +353,37 @@ public class PlaceListActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                 ArrayList<String> strr = new ArrayList<>();
-
+                int shop_check =0;
                 if (task.isSuccessful()) {
                     Integer lcc = 0;
                     //check if list is empty
                     if (task.getResult().getDocuments().size() > 0) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
 
-                            //string containing the nearby stores
+                            String service_category = (String) document.get("service_category");
+                            Integer service_category_no = 0;
+                            switch(service_category){
+                                case "Pharmacy": service_category_no = 1; break;
+                                case "Grocery" : service_category_no = 2;   break;
+                                case "Bank"   : service_category_no = 3;    break;
+                                case "Hospital" : service_category_no = 4; break;
+                                default:
+                            }
 
+                            if(service_category_no == store_type) {
+                                shop_check =1;
+                                String lati = document.getData().get("latitude").toString();
 
-                            String lati = document.getData().get("latitude").toString();
+                                String longi = document.getData().get("longitude").toString();
 
-                            String longi = document.getData().get("longitude").toString();
+                                String unique_id = document.getId();
 
-                            String unique_id = document.getId();
-
-                            strr.add(document.getData().get("shop_name").toString() + "\t\t:" + lcc + "|" + lati + "|" + longi + "|" + unique_id);
+                                strr.add(document.getData().get("shop_name").toString() + "\t\t:" + lcc + "|" + lati + "|" + longi + "|" + unique_id);
+                            }
                         }
+                                if (shop_check == 1)
+                                updatelist(strr);
 
-                        updatelist(strr);
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "There are no registered stores in the database:(", 1000).show();
@@ -380,9 +395,10 @@ public class PlaceListActivity extends AppCompatActivity {
 
         addquery1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
+            @SuppressLint("WrongConstant")
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
+                int shop_check = 0;
                 ArrayList<String> strr = new ArrayList<>();
                 if (task.isSuccessful()) {
                     Integer lcc = 0;
@@ -390,16 +406,40 @@ public class PlaceListActivity extends AppCompatActivity {
                     if (task.getResult().getDocuments().size() > 0) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             //string containing the nearby stores
-                            lcc = (Integer) document.get("lcc");
-                            String lati = document.get("latitude").toString();
-                            String longi = document.get("longitude").toString();
-                            String unique_id = document.getId();
-                            strr.add(document.get("shop_name").toString() + "\t\t:" + lcc + "|" + lati + "|" + longi + "|" + unique_id);
+                            String service_category = (String) document.get("service_category");
+                            Integer service_category_no = 0;
+                            switch (service_category) {
+                                case "Pharmacy":
+                                    service_category_no = 1;
+                                    break;
+                                case "Grocery":
+                                    service_category_no = 2;
+                                    break;
+                                case "Bank":
+                                    service_category_no = 3;
+                                    break;
+                                case "Hospital":
+                                    service_category_no = 4;
+                                    break;
+                                default:
+                            }
+
+                            if (service_category_no == store_type) {
+                                shop_check = 1;
+                                String lati = document.getData().get("latitude").toString();
+
+                                String longi = document.getData().get("longitude").toString();
+
+                                String unique_id = document.getId();
+
+                                strr.add(document.getData().get("shop_name").toString() + "\t\t:" + lcc + "|" + lati + "|" + longi + "|" + unique_id);
+                            }
                         }
-                    }else{
+                        if (shop_check == 1)
+                            updatelist(strr);
+                    } else {
                         Toast.makeText(getApplicationContext(), "There are no registered stores in the database:(", 1000).show();
                     }
-                    updatelist(strr);
                 }
             }
         });
