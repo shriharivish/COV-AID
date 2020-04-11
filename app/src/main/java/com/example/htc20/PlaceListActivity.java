@@ -361,6 +361,7 @@ public class PlaceListActivity extends AppCompatActivity {
                         for (QueryDocumentSnapshot document : task.getResult()) {
 
                             String service_category = (String) document.get("service_category");
+                            Log.d("mt", service_category);
                             Integer service_category_no = 0;
                             switch(service_category){
                                 case "Pharmacy": service_category_no = 1; break;
