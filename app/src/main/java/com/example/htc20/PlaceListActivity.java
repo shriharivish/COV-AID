@@ -210,8 +210,7 @@ public class PlaceListActivity extends AppCompatActivity {
                         two.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent i = new Intent(android.content.Intent.ACTION_VIEW,
-                                        Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + nearbyList.get(index).getLatitude() + "," + nearbyList.get(index).getLongitude()));
+                                Intent i = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + nearbyList.get(index).getLatitude() + "," + nearbyList.get(index).getLongitude()));
                                 i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                                 startActivity(i);
                                 dialog.cancel();
@@ -294,7 +293,6 @@ public class PlaceListActivity extends AppCompatActivity {
                             temp_loc = new NearbyPlaces(jsonObject.getString("name"),coordinate);
                             nearbyList.add(temp_loc);
                             mapCoordinates.put(temp_loc.getPlaceName(), coordinate);
-
                             list.add(temp_loc.getPlaceName()+"\t\t:"+0);
                             adapter.notifyDataSetChanged();
                           
@@ -308,7 +306,7 @@ public class PlaceListActivity extends AppCompatActivity {
                   
                     //get the minimum and maximum latitudes and longitudes
                     LatLng[] latLng1 = boundingCoordinates(PROXIMITY_RADIUS);
-                    Log.d("mmtag", "val:" + latLng1[0]);
+                    Log.d("mmtag", "val:" + latLng1[0]+""+latLng1[1]);
 
                    Query addquery = addref.whereGreaterThanOrEqualTo("latitude", latLng1[0].latitude).
                             whereLessThanOrEqualTo("latitude",latLng1[1].latitude);
@@ -346,31 +344,39 @@ public class PlaceListActivity extends AppCompatActivity {
     private void queryfunArraylist(Query addquery, Query addquery1) {
 
         addquery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @SuppressLint("WrongConstant")
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                 ArrayList<String> strr = new ArrayList<>();
-                Log.d("LCCO", String.valueOf(task.isSuccessful()));
+
                 if (task.isSuccessful()) {
                     Integer lcc = 0;
-                    Log.d("LCCO1", String.valueOf(task.getResult()));
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d("LCCO1", String.valueOf(task.isSuccessful()));
-                        //string containing the nearby stores
-                        lcc = (Integer)document.get("lcc");
-                        Log.d("LCC","val:"+lcc);
-                        String lati = document.getData().get("latitude").toString();
-                        Log.d("LCC1",lati);
-                        String longi = document.getData().get("longitude").toString();
-                        Log.d("LCC2",longi);
-                        String unique_id = document.getId();
-                        Log.d("LCC3",unique_id);
-                        strr.add(document.getData().get("shop_name").toString()+"\t\t:"+lcc+"|"+lati+"|"+longi+"|"+unique_id);
+                    //check if list is empty
+                    if (task.getResult().getDocuments().size() > 0) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+
+                            //string containing the nearby stores
+
+
+                            String lati = document.getData().get("latitude").toString();
+
+                            String longi = document.getData().get("longitude").toString();
+
+                            String unique_id = document.getId();
+
+                            strr.add(document.getData().get("shop_name").toString() + "\t\t:" + lcc + "|" + lati + "|" + longi + "|" + unique_id);
+                        }
+
+                        updatelist(strr);
                     }
-                    updatelist(strr);
+                    else{
+                        Toast.makeText(getApplicationContext(), "There are no registered stores in the database:(", 1000).show();
+                    }
                 }
             }
         });
+
 
         addquery1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
@@ -380,15 +386,19 @@ public class PlaceListActivity extends AppCompatActivity {
                 ArrayList<String> strr = new ArrayList<>();
                 if (task.isSuccessful()) {
                     Integer lcc = 0;
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        //string containing the nearby stores
-                        lcc = (Integer) document.get("lcc");
-                        String lati = document.get("latitude").toString();
-                        String longi = document.get("longitude").toString();
-                        String unique_id = document.getId();
-                        strr.add(document.get("shop_name").toString()+"\t\t:"+lcc+"|"+lati+"|"+longi+"|"+unique_id);
+                    //check if list is empty
+                    if (task.getResult().getDocuments().size() > 0) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            //string containing the nearby stores
+                            lcc = (Integer) document.get("lcc");
+                            String lati = document.get("latitude").toString();
+                            String longi = document.get("longitude").toString();
+                            String unique_id = document.getId();
+                            strr.add(document.get("shop_name").toString() + "\t\t:" + lcc + "|" + lati + "|" + longi + "|" + unique_id);
+                        }
+                    }else{
+                        Toast.makeText(getApplicationContext(), "There are no registered stores in the database:(", 1000).show();
                     }
-
                     updatelist(strr);
                 }
             }
@@ -484,6 +494,7 @@ public class PlaceListActivity extends AppCompatActivity {
 
     public LatLng[] boundingCoordinates(double distance) {
         double radLat = Math.toRadians(Latitude);
+        Log.d("LATLON","val:"+Latitude+" "+Longitude);
         double radLon = Math.toRadians(Longitude);
         double radius = 6371*1000.0;
         if (radius < 0d || distance < 0d)
