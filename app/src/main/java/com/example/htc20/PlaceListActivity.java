@@ -637,7 +637,7 @@ class RequestJsonPlaces extends AsyncTask<String, String, String> {
 class NearbyPlaces{
 
     private String place_name;
-    private Point coordinate;
+    public Point coordinate;
     public boolean in_database;
     private String shop_unique_id;
 
