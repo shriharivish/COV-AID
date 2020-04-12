@@ -392,6 +392,7 @@ public class PlaceListActivity extends AppCompatActivity {
                     updatelist(strr);
                 }
                 else{
+                    //if the document is empty add the unregistered stores to listview
                     setListView();
                     Toast.makeText(getApplicationContext(), "There are no registered stores in the database:(", 1000).show();
                 }
@@ -441,6 +442,8 @@ public class PlaceListActivity extends AppCompatActivity {
                     if (shop_check == 1)
                         updatelist(strr);
                 } else {
+                    //if the document is empty add the unregistered stores to listview
+                    setListView();
                     Toast.makeText(getApplicationContext(), "There are no registered stores in the database:(", 1000).show();
                 }
             }
@@ -504,6 +507,8 @@ public class PlaceListActivity extends AppCompatActivity {
         if(is_registered_locality == false){
             Toast.makeText(getApplicationContext(), "There are no registered stores in this area:(", Toast.LENGTH_SHORT).show();
         }
+        //remove duplicates from the list in case both the queries resulted in 0 registered stores
+        list = new ArrayList<String>(new LinkedHashSet<String>(list));
         adapter.notifyDataSetChanged();
     }
 
