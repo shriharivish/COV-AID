@@ -181,6 +181,7 @@ public class SecondActivity extends AppCompatActivity {
                                                             }
                                                         }
                                                     }
+
                                                 }
                                             });
                                         } else {
@@ -215,7 +216,7 @@ public class SecondActivity extends AppCompatActivity {
 
 
                                                                 lcc--;
-                                                                Toast.makeText(SecondActivity.this, "Entry has been recorded!", Toast.LENGTH_LONG).show();
+                                                                Toast.makeText(SecondActivity.this, "Exit has been recorded!", Toast.LENGTH_LONG).show();
                                                                 flag = 1;
 
                                                                 db.collection("store").document(id).update("lcc", lcc);
