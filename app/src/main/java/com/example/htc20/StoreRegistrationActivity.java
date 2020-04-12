@@ -32,6 +32,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
@@ -172,7 +173,9 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                                     throw task.getException();
                                 } catch (FirebaseAuthUserCollisionException e ) {
                                     Toast.makeText(StoreRegistrationActivity.this,"This ID already exists,Please use a unique ID!", Toast.LENGTH_SHORT).show();
-                                } catch (Exception e) {
+                                } catch (FirebaseAuthWeakPasswordException e) {
+                                    Toast.makeText(StoreRegistrationActivity.this, "Please try a Strong Password!", Toast.LENGTH_SHORT).show();
+                                }catch (Exception e){
                                     Toast.makeText(StoreRegistrationActivity.this, String.valueOf(e), Toast.LENGTH_SHORT).show();
                                 }
                             }
