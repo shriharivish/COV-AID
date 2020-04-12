@@ -147,7 +147,7 @@ public class SecondActivity extends AppCompatActivity {
                 switch (value_tpe) {
                     case FirebaseVisionBarcode.TYPE_TEXT: {
                         String text = item.getRawValue();
-                        int index = text.indexOf('#');
+                        int index = text.indexOf(':');
                         final String id = text.substring(0, index);
                         final String email = fbase.getCurrentUser().getEmail();
                         if (isSubstring("entry", text) != -1) {

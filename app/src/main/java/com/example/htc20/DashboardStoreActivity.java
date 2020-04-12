@@ -43,8 +43,8 @@ public class DashboardStoreActivity extends AppCompatActivity {
         storeName = findViewById(R.id.tv_store_name);
         storeName.setText(unique_id + "'s Dashboard");
 
-        String text_entry = unique_id + "#entry";
-        String text_exit = unique_id + "#exit";
+        String text_entry = unique_id + ":entry";
+        String text_exit = unique_id + ":exit";
 
         new ImageDownloaderTask(imageView_entry).execute("https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=" + text_entry);
         new ImageDownloaderTask(imageView_exit).execute("https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=" + text_exit);
