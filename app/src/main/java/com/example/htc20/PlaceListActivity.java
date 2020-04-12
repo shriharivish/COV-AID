@@ -3,7 +3,6 @@ package com.example.htc20;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
@@ -228,7 +227,7 @@ public class PlaceListActivity extends AppCompatActivity {
                         });
                     }
                     else if (store_type == 4){
-                        text_view.setText("Are you a CORONO infected patient");
+                        text_view.setText("Are you a CORONA infected patient?");
                         one.setText("Yes");
                         two.setText("No");
                         one.setOnClickListener(new View.OnClickListener() {
@@ -393,6 +392,7 @@ public class PlaceListActivity extends AppCompatActivity {
                     updatelist(strr);
                 }
                 else{
+                    setListView();
                     Toast.makeText(getApplicationContext(), "There are no registered stores in the database:(", 1000).show();
                 }
             }
@@ -541,15 +541,6 @@ public class PlaceListActivity extends AppCompatActivity {
         input.setLayoutParams(lp);
         input.setText("We're Sorry, but the service is not currently offered for this outlet");
         builder.setView(input);
-
-        // Set up the buttons
-        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-            @SuppressLint("WrongConstant")
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
         builder.show();
     }
 
