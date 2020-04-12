@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.jjoe64:graphview:4.2.2'
     // For developers using the Android Support Library
     implementation 'pub.devrel:easypermissions:2.0.1'
     testImplementation 'junit:junit:4.12'
