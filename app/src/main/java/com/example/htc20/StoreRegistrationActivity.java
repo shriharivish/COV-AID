@@ -176,6 +176,7 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                                 } catch (FirebaseAuthWeakPasswordException e) {
                                     Toast.makeText(StoreRegistrationActivity.this, "Please try a Strong Password!", Toast.LENGTH_SHORT).show();
                                 }catch (Exception e){
+                                    //for any other exception
                                     Toast.makeText(StoreRegistrationActivity.this, String.valueOf(e), Toast.LENGTH_SHORT).show();
                                 }
                             }
