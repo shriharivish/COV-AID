@@ -79,5 +79,8 @@
     <string name="item_quantity">Item Quantity</string>
     <string name="add_another_order">Add New Order</string>
     <string name="do_you_want_to_order_or_get_directions">Do you want to order or get directions?</string>
+    <string name="store_owner_dashboard">Store Owner Dashboard</string>
+    <string name="exit_qr_code">Exit QR Code</string>
+    <string name="entry_qr_code">Entry QR Code</string>
 </resources>
 
