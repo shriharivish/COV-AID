@@ -168,6 +168,7 @@ public class StoreRegistrationActivity extends AppCompatActivity {
                                 startActivity(new Intent(StoreRegistrationActivity.this, StoreLoginActivity.class));
 
                             } else {
+
                                 Toast.makeText(StoreRegistrationActivity.this, String.valueOf(task.getException()), Toast.LENGTH_SHORT).show();
                             }
                         }

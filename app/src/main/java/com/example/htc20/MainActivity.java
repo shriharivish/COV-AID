@@ -58,11 +58,11 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseUser user = fbauth.getCurrentUser();
 
-        if (user != null) {
-            finish();
-            startActivity(new Intent(MainActivity.this, DashboardCitizenActivity.class));
-            startActivity(new Intent(MainActivity.this, DashboardCitizenActivity.class));
-        }
+//        if (user != null) {
+//            finish();
+//            startActivity(new Intent(MainActivity.this, DashboardCitizenActivity.class));
+//            startActivity(new Intent(MainActivity.this, DashboardCitizenActivity.class));
+//        }
 
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
