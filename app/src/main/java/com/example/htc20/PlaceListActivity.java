@@ -386,10 +386,15 @@ public class PlaceListActivity extends AppCompatActivity {
                             String unique_id = document.getId();
                             String lcc = document.getData().get("lcc").toString();
                             strr.add(document.getData().get("shop_name").toString() + ": " + lcc + "@" + lati + "@" + longi + "@" + unique_id);
+                        }else{
+                            Log.d("mytag","The service category is not registered");
+                            shop_check=2;
                         }
                     }
                     if (shop_check == 1)
                     updatelist(strr);
+                    else if (shop_check == 2)
+                        setListView();
                 }
                 else{
                     //if the document is empty add the unregistered stores to listview
@@ -437,10 +442,15 @@ public class PlaceListActivity extends AppCompatActivity {
                             String unique_id = document.getId();
                             String lcc = document.getData().get("lcc").toString();
                             strr.add(document.getData().get("shop_name").toString() + ": " + lcc + "@" + lati + "@" + longi + "@" + unique_id);
+                        }else{
+                            Log.d("mytag","The service category is not registered");
+                            shop_check=2;
                         }
                     }
                     if (shop_check == 1)
                         updatelist(strr);
+                    else if (shop_check == 2)
+                        setListView();
                 } else {
                     //if the document is empty add the unregistered stores to listview
                     setListView();
@@ -510,6 +520,9 @@ public class PlaceListActivity extends AppCompatActivity {
         //remove duplicates from the list in case both the queries resulted in 0 registered stores
         list = new ArrayList<String>(new LinkedHashSet<String>(list));
         adapter.notifyDataSetChanged();
+        if(list.size() == 0){
+            Toast.makeText(getApplicationContext(), "Couldn't get unregistered stores from Google maps. Limit Exceeded! ", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private JSONArray getAllresults(double Latitude,double  Longitude, String nearbyPlace) throws UnsupportedEncodingException, ExecutionException, InterruptedException, JSONException {
