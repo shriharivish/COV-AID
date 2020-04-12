@@ -190,13 +190,13 @@ public class PlaceListActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                if(store_type == 1 || store_type == 2 || store_type == 4) {
+                if(store_type == 1 || store_type == 2) {
                     final Dialog dialog = new Dialog(PlaceListActivity.this);
                     dialog.setContentView(R.layout.custom_dialog_layout);
                     Button one = (Button) dialog.getWindow().findViewById(R.id.btn_1);
                     Button two = (Button) dialog.getWindow().findViewById(R.id.btn_2);
                     TextView text_view = (TextView) dialog.getWindow().findViewById(R.id.etTextDialog);
-                    if (store_type == 1 || store_type == 2) {
+
                         one.setText("order");
                         two.setText("directions");
                         one.setOnClickListener(new View.OnClickListener() {
@@ -225,35 +225,7 @@ public class PlaceListActivity extends AppCompatActivity {
                                 dialog.cancel();
                             }
                         });
-                    }
-                    else if (store_type == 4){
-                        text_view.setText("Are you a CORONA infected patient?");
-                        one.setText("Yes");
-                        two.setText("No");
-                        one.setOnClickListener(new View.OnClickListener() {
-                            @SuppressLint("WrongConstant")
-                            @Override
-                            public void onClick(View v) {
-                                //add lcc as corona patient
-                                Toast.makeText(getApplicationContext(), "Response Submitted!", 0).show();
-                                dialog.cancel();
-                            }
-                        });
-
-                        two.setOnClickListener(new View.OnClickListener() {
-                            @SuppressLint("WrongConstant")
-                            @Override
-                            public void onClick(View v) {
-                                //add lcc as normal patient
-                                Toast.makeText(getApplicationContext(), "Response Submitted!", 0).show();
-                                dialog.cancel();
-                            }
-                        });
-                    }
-                    dialog.show();
-
-                }
-                else{
+                    } else{
                     Intent i = new Intent(android.content.Intent.ACTION_VIEW,
                             Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + nearbyList.get(position).getLatitude() + "," + nearbyList.get(position).getLongitude()));
                     i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
