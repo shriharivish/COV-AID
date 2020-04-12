@@ -13,6 +13,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <Button
+            android:id="@+id/btn_trend"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:text="Trends"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="230dp"

@@ -48,7 +48,7 @@ public class TrendsActivity extends AppCompatActivity {
 
         //Query for all the nearby stores in the locality
         Query query = Ref.whereEqualTo("shop_type", "Hospital");
-        queryfun(query);
+        //queryfun(query);
 
         series.appendData(new DataPoint(2, 1), false, 50);
         series.appendData(new DataPoint(3, 1), false, 50);

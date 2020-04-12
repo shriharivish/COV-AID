@@ -1,12 +1,12 @@
 package com.example.htc20;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,16 +22,27 @@ public class DashboardCitizenActivity extends AppCompatActivity {
     private Button getGroceries;
     private Button getBanks;
     private Button getHospitals;
+    private Button showTrends;
 
     private FloatingActionButton Fab;
     private final int REQUEST_LOCATION_PERMISSION = 1;
     private FirebaseAuth fbAuth;
 
     private Button signOut;
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard_citizen);
+        //display trends
+        showTrends = findViewById(R.id.btn_trend);
+        showTrends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DashboardCitizenActivity.this, TrendsActivity.class);
+                startActivity(i);
+            }
+        });
         //view nearby pharmacies
         getPharmacies = findViewById(R.id.btn_viewPharmacies);
         getPharmacies.setOnClickListener(new View.OnClickListener() {
