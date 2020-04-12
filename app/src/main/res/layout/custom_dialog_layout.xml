@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="80dp"
+    android:layout_height="90dp"
     android:background="#3E80B4"
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/txt_dia"
+        android:id="@+id/etTextDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:text="Do you want to order or get directions?"
+        android:text="@string/do_you_want_to_order_or_get_directions"
         android:textColor="@android:color/white"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textStyle="bold"/>
 
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
         android:layout_gravity="center"
         android:background="#3E80B4"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_1"
@@ -30,6 +30,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/white"
             android:clickable="true"
+            android:focusable="true"
             android:textColor="#5DBCD2"
             android:textStyle="bold" />
 
@@ -37,9 +38,10 @@
             android:id="@+id/btn_2"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:background="@android:color/white"
             android:clickable="true"
+            android:focusable="true"
             android:textColor="#5DBCD2"
             android:textStyle="bold" />
 
