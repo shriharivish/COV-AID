@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText Password;
 
     private Button Login;
-    private Button LoginPhone;
     private TextView Register;
     //    private int count = 5;
     private FirebaseAuth fbauth;
@@ -48,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         Email = (EditText) findViewById(R.id.etEmail);
         Password = (TextInputEditText) findViewById(R.id.etPassword);
         Login = (Button) findViewById(R.id.btnLogin);
-        LoginPhone = (Button) findViewById(R.id.btnLoginPhone);
         Register = (TextView) findViewById(R.id.tvRegister);
         progressBarLogin = (ProgressBar) findViewById(R.id.pb_Login);
 
@@ -81,14 +79,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LoginPhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, PhoneLoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        });
+
     }
 
         private boolean smallValidate(String userName, String password){
