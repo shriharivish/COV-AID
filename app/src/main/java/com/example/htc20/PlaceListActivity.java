@@ -266,8 +266,8 @@ public class PlaceListActivity extends AppCompatActivity {
                     int placesCount = 0;
                     switch (store_type) {
                         case 1:     location_type = "pharmacy|drugstore";    break;
-                        case 2:     location_type = "grocery_or_supermarket";     break;
-                        case 3:     location_type = "atm";   break;
+                        case 2:     location_type = "grocery_or_supermarket|store";     break;
+                        case 3:     location_type = "bank|atm";   break;
                         case 4:     location_type = "hospital";   break;
                         default:    Log.d("errtag", "Unexpected entry! check DashboardCitizenActivity");
                     }
@@ -317,10 +317,10 @@ public class PlaceListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Uri gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude);
                 switch (store_type) {
-                    case 1:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=pharmacy|drugstore"); break;
-                    case 2:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=grocery_or_supermarket|store");  break;
-                    case 3:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=atm");  break;
-                    case 4:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=hospital");
+                    case 1:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=pharmacies near me"); break;
+                    case 2:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=groceries near me");  break;
+                    case 3:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=atms and banks near me");  break;
+                    case 4:     gmmIntentUri = Uri.parse("geo:" + Latitude + "," + Longitude + "?q=hospitals near me");
                     default:    Log.d("errtag", "Unexpected entry! check DashboardCitizenActivity");
                 }
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
