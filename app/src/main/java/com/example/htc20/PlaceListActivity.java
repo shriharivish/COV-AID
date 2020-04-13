@@ -487,6 +487,7 @@ public class PlaceListActivity extends AppCompatActivity {
     private void setListView(){
         for(NearbyPlaces np: nearbyList) {
             if(np.getLCC() == null){
+                //if store is unregistered
                 String answer = np.getPlaceName() + "\t|\t LCC: \t"+"N/R";
                 list.add(answer);
             }
