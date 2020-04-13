@@ -197,36 +197,37 @@ public class PlaceListActivity extends AppCompatActivity {
                     Button two = (Button) dialog.getWindow().findViewById(R.id.btn_2);
                     TextView text_view = (TextView) dialog.getWindow().findViewById(R.id.etTextDialog);
 
-                        one.setText("order");
-                        two.setText("directions");
-                        one.setOnClickListener(new View.OnClickListener() {
-                            @SuppressLint("WrongConstant")
-                            @Override
-                            public void onClick(View v) {
-                                if(nearbyList.get(position).in_database == true) {
-                                    Intent i = new Intent(PlaceListActivity.this, CitizenPurchaseActivity.class);
-                                    i.putExtra("store_info", nearbyList.get(position).toString());
-                                    startActivity(i);
-                                    dialog.cancel();
-                                }
-                                else{
-                                    serviceUnavailableNotification();
-                                    dialog.cancel();
-                                }
-
-                            }
-                        });
-
-                        two.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent i = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + nearbyList.get(position).getLatitude() + "," + nearbyList.get(position).getLongitude()));
-                                i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                    one.setText("order");
+                    two.setText("directions");
+                    one.setOnClickListener(new View.OnClickListener() {
+                        @SuppressLint("WrongConstant")
+                        @Override
+                        public void onClick(View v) {
+                            if(nearbyList.get(position).in_database == true) {
+                                Intent i = new Intent(PlaceListActivity.this, CitizenPurchaseActivity.class);
+                                i.putExtra("store_info", nearbyList.get(position).toString());
                                 startActivity(i);
                                 dialog.cancel();
                             }
-                        });
+                            else{
+                                serviceUnavailableNotification();
+                                dialog.cancel();
+                            }
+
+                        }
+                    });
+
+                    two.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent i = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + nearbyList.get(position).getLatitude() + "," + nearbyList.get(position).getLongitude()));
+                            i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                            startActivity(i);
+                            dialog.cancel();
+                        }
+                    });
                     dialog.show();
+
                     } else{
                     Intent i = new Intent(android.content.Intent.ACTION_VIEW,
                             Uri.parse("http://maps.google.com/maps?saddr=" + Latitude + "," + Longitude + "&daddr=" + nearbyList.get(position).getLatitude() + "," + nearbyList.get(position).getLongitude()));

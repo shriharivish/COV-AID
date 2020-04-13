@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B3EA7F7F"
+    android:background="#B31E3B71"
     android:visibility="visible"
     tools:context=".MainActivity">
 
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="224dp"
         android:background="#C3FFFFFF"
-        android:text="@string/log_in"
+        android:text="LOGIN"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
         android:background="#C3FFFFFF"
-        android:text="@string/login_in_with_phone"
+        android:text="LOGIN WITH PHONE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -99,16 +99,15 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="163dp"
-        android:layout_height="140dp"
+        android:layout_width="175dp"
+        android:layout_height="154dp"
         android:contentDescription="TODO"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.471"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.165"
-        app:srcCompat="@drawable/doctorwebicon" />
+        app:layout_constraintVertical_bias="0.116"
+        app:srcCompat="@drawable/user" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etPassword"

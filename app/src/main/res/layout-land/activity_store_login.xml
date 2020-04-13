@@ -16,9 +16,10 @@
         android:text="LogIn"
         app:layout_constraintBottom_toTopOf="@+id/etNotRegistered"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editUniqueID"
-        app:layout_constraintVertical_bias="0.731" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/editUniqueID"
@@ -52,7 +53,7 @@
         android:id="@+id/etNotRegistered"
         android:layout_width="285dp"
         android:layout_height="37dp"
-        android:layout_marginBottom="108dp"
+        android:layout_marginBottom="16dp"
         android:hint="@string/not_registered_sign_up"
         android:text="@string/not_registered_sign_up"
         android:textSize="25sp"

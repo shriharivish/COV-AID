@@ -38,8 +38,11 @@
         android:id="@+id/img_qrCodeEntry"
         android:layout_width="147dp"
         android:layout_height="126dp"
-        app:srcCompat="@drawable/login1"
-        tools:layout_editor_absoluteX="127dp"
-        tools:layout_editor_absoluteY="113dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.201"
+        app:srcCompat="@drawable/login1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
