@@ -365,6 +365,8 @@ public class PlaceListActivity extends AppCompatActivity {
                             String unique_id = document.getId();
                             String lcc = document.getData().get("lcc").toString();
                             strr.add(document.getData().get("shop_name").toString() + ": " + lcc + "@" + lati + "@" + longi + "@" + unique_id);
+                            Log.d("sttr[last] = ", strr.get(strr.size() - 1));
+
                         }else{
                             Log.d("mytag","The service category is not registered");
                             shop_check=2;
@@ -374,6 +376,10 @@ public class PlaceListActivity extends AppCompatActivity {
                     updatelist(strr);
                     else if (shop_check == 2)
                         setListView();
+                    Log.d("shop_check = ", String.valueOf(shop_check));
+                    Log.d("strr.size() = ", String.valueOf(strr.size()));
+                    Log.d("sttr[last] = ", strr.get(strr.size() - 1));
+
                 }
                 else{
                     //if the document is empty add the unregistered stores to listview
@@ -426,6 +432,9 @@ public class PlaceListActivity extends AppCompatActivity {
                         updatelist(strr);
                     else if (shop_check == 2)
                         setListView();
+                    Log.d("shop_check = ", String.valueOf(shop_check));
+                    Log.d("strr.size() = ", String.valueOf(strr.size()));
+                    Log.d("sttr[last] = ", strr.get(strr.size() - 1));
                 } else {
                     //if the document is empty add the unregistered stores to listview
                     setListView();
