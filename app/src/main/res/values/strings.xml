@@ -1,7 +1,7 @@
 <resources>
     <string name="citizenlogin">Citizen</string>
     <string name="storelogin">Store Owner</string>
-    <string name="app_name">HTC20</string>
+    <string name="app_name">Cov-Aid</string>
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
