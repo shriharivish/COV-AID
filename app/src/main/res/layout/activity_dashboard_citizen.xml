@@ -79,7 +79,7 @@
                             android:layout_alignParentBottom="true"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
-                            android:layout_marginEnd="53dp"
+                            android:layout_marginEnd="45dp"
                             android:layout_marginBottom="15dp"
                             android:text="@string/pharmacies"
                             android:textSize="16sp" />
@@ -116,7 +116,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentBottom="true"
-                            android:layout_marginEnd="60dp"
+                            android:layout_marginEnd="51dp"
                             android:layout_marginBottom="9dp"
                             android:text="@string/groceries"
                             android:textSize="16sp" />
@@ -163,8 +163,8 @@
                             android:layout_alignParentBottom="true"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
-                            android:layout_marginEnd="53dp"
-                            android:layout_marginBottom="15dp"
+                            android:layout_marginEnd="63dp"
+                            android:layout_marginBottom="18dp"
                             android:text="@string/banks"
                             android:textSize="16sp" />
                     </RelativeLayout>
@@ -201,8 +201,8 @@
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentBottom="true"
                             android:layout_gravity="center"
-                            android:layout_marginEnd="66dp"
-                            android:layout_marginBottom="11dp"
+                            android:layout_marginEnd="50dp"
+                            android:layout_marginBottom="12dp"
                             android:text="@string/hospitals"
                             android:textSize="16sp" />
                     </RelativeLayout>
