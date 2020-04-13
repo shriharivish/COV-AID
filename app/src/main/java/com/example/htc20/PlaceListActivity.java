@@ -348,9 +348,13 @@ public class PlaceListActivity extends AppCompatActivity {
                         Log.d("mt", service_category);
                         Integer service_category_no = 0;
                         switch(service_category){
-                            case "Pharmacy": service_category_no = 1; break;
-                            case "Grocery Shop" : service_category_no = 2;   break;
-                            case "Bank"   : service_category_no = 3;    break;
+                            case "Medical Store": service_category_no = 1; break;
+                            case "Grocery Shop" :
+                            case "Supermarket"  :
+                                service_category_no = 2;   break;
+                            case "Bank"   :
+                            case "ATM"    :
+                                service_category_no = 3;    break;
                             case "Hospital" : service_category_no = 4; break;
                             default:
                         }
@@ -396,18 +400,14 @@ public class PlaceListActivity extends AppCompatActivity {
                         String service_category = (String) document.get("service_category");
                         Integer service_category_no = 0;
                         switch (service_category) {
-                            case "Pharmacy":
-                                service_category_no = 1;
-                                break;
-                            case "Grocery Shop":
-                                service_category_no = 2;
-                                break;
-                            case "Bank":
-                                service_category_no = 3;
-                                break;
-                            case "Hospital":
-                                service_category_no = 4;
-                                break;
+                            case "Medical Store": service_category_no = 1; break;
+                            case "Grocery Shop" :
+                            case "Supermarket"  :
+                                service_category_no = 2;   break;
+                            case "Bank"   :
+                            case "ATM"    :
+                                service_category_no = 3;    break;
+                            case "Hospital" : service_category_no = 4; break;
                             default:
                         }
                         if (service_category_no == store_type) {
