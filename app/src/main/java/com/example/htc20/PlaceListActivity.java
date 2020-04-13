@@ -486,8 +486,15 @@ public class PlaceListActivity extends AppCompatActivity {
 
     private void setListView(){
         for(NearbyPlaces np: nearbyList) {
-            String answer = np.getPlaceName() + "\t|\t LCC: \t" + String.valueOf(np.getLCC());
-            list.add(answer);
+            if(np.getLCC() == null){
+                String answer = np.getPlaceName() + "\t|\t LCC: \t"+"N/R";
+                list.add(answer);
+            }
+            else {
+                String answer = np.getPlaceName() + "\t|\t LCC: \t" + String.valueOf(np.getLCC());
+                list.add(answer);
+            }
+
         }
         if(is_registered_locality == false){
             Toast.makeText(getApplicationContext(), "There are no registered stores in this area:(", Toast.LENGTH_SHORT).show();
