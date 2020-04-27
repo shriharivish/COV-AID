@@ -9,9 +9,13 @@ As India prepares itself for Stage-3 community transmission of the Novel Coronav
 ### SOLUTION
 
 We wish to bridge the gap created by the lack of information using Mobile Technology. The goal of this app is to provide the citizens the location and the live count of the nearest stores with the least crowd. Using the App, citizens can elect to visit essential stores at the most suitable time, when the crowd is less in number, thus implementing Social Distancing in a very unique way. The following Services have been considered as essentials in the App implementation :-
+
 -> Hospitals 
+
 -> Medical Store / Pharmacies
+
 -> Grocery Shops/ Supermarkets
+
 -> ATMs/ Banks
 
 ### FEATURES
