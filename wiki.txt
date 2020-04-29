@@ -1,6 +1,13 @@
 
 Developer Instructions:
 
+Follow the instructions to run the app:
+1. Clone https://github.com/acharaakshit/COV-AID.git to your system.
+2. Open the project in Android Studio.
+3. Connect the project to a Firebase Database, details of which have been provided below.
+4. In Android Studio, go Build->Build APKS and Bundle to build the corressponding APK file.
+5. Locate the APK file and copy it into your android device to install and run the app.
+
 Follow the instructions to connect the app to Firebase:
 
 1. Go to https://console.firebase.google.com
