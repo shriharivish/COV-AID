@@ -40,7 +40,7 @@ Note: The data for the live crowd count has to be collected by the means of QR c
 
 Constraints: Limited number of calls to google places api (can be scaled if a paid cloud account is used).
 
-Developer instructions can be found here: /link/for/developer/wiki
+For developer instructions see [this](wiki.txt) 
 
 We want to keep this app as open source and wish to contribute to the community.
 

@@ -8,6 +8,10 @@ Follow the instructions to run the app:
 4. In Android Studio, go Build->Build APKS and Bundle to build the corressponding APK file.
 5. Locate the APK file and copy it into your android device to install and run the app.
 
+Note: To run this project, you will also need to generate your [google maps api key](https://developers.google.com/maps/documentation/android-sdk/get-api-key).
+      After generating the key, go to app->res->values->google_maps_api.xml and put your own api key. 
+      	
+
 Follow the instructions to connect the app to Firebase:
 
 1. Go to https://console.firebase.google.com
