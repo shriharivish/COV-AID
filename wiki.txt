@@ -1,0 +1,11 @@
+
+Developer Instructions:
+
+Follow the instructions to connect the app to Firebase:
+
+1. Go to https://console.firebase.google.com
+2. Login with the account you wish to connect the database to.
+3. Make a new project and follow the instructions provided after that.
+4. After creating the project, go to project settings page and download the latest google-services.json file.
+5. Copy and paste the downloaded file to 'COV_AID/app' folder. 
+6. Use the Firebase console website or Firebase Assistant provided in Android Studio to verify if the project has been connected to the database.
