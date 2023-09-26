@@ -38,6 +38,8 @@ The app shall provide the following features :-
 
 Note: The data for the live crowd count has to be collected by the means of QR codes. Every shop will have its very own QR code and customers must scan it using the app on arrival. This will intimate his/her presence in the shop giving us a very accurate LCC.
 
+For developer instructions see [Developer Wiki](https://github.com/shriharivish/COV-AID/wiki).
+
 Constraints: Limited number of calls to google places api (can be scaled if a paid cloud account is used).
 
 We want to keep this app as open source and wish to contribute to the community.
